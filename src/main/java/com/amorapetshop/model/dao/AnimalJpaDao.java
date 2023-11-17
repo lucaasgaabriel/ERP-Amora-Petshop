@@ -11,11 +11,6 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 
 
-
-/**
- * Classe especialista para persistência de Cliente
- */
-
 public class AnimalJpaDao extends EntityJpaDao<Long, Animal> {
     public void salvar(Animal animal) {
 
