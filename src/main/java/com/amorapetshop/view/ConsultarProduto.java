@@ -4,10 +4,35 @@ import javax.swing.*;
 
 public class ConsultarProduto {
     private JPanel panel1;
-    private JTextField textField1;
+    private JTextField textFieldNome;
     private JButton cadastrarButton;
     private JButton pesquisarButton;
     private JButton voltarButton;
-    private JTable table1;
-    private JButton button1;
+    private JTable tableProdutos;
+    private JButton buttonLimpar;
+
+    public JTextField getNomeTextField() {
+        return textFieldNome;
+    }
+
+    public JButton getCadastrarButton() {
+        return cadastrarButton;
+    }
+
+    public JButton getPesquisarButton() {
+        return pesquisarButton;
+    }
+
+    public JButton getVoltarButton() {
+        return voltarButton;
+    }
+
+    public JTable getTableProdutos() {
+        return tableProdutos;
+    }
+
+    public JButton getButtonLimpar() {
+        return buttonLimpar;
+    }
 }
+
