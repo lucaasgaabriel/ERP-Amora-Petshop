@@ -23,7 +23,6 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 public class FrmEditPessoa extends JFrame {
 	//Campos declareados como atributos (Globais na classe)
