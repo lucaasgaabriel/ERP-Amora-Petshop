@@ -16,9 +16,6 @@ import javax.persistence.TypedQuery;
  * Classe especialista para persistência de Cliente
  */
 
-import java.util.List;
-import com.amorapetshop.model.Animal;
-
 public class AnimalJpaDao extends EntityJpaDao<Long, Animal> {
     public void salvar(Animal animal) {
 
@@ -35,6 +32,18 @@ public class AnimalJpaDao extends EntityJpaDao<Long, Animal> {
             rollback();
         }
     }
+
+    public void excluir(Animal animal) {
+        try {
+            begin();
+            delete(animal);
+            commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            rollback();
+        }
+    }
+
 
     public List<Animal> buscaFiltro(Animal a) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -60,7 +69,7 @@ public class AnimalJpaDao extends EntityJpaDao<Long, Animal> {
         return query.getResultList();
     }
 
-    public List<Animal> buscaTodos() {
+    public List buscaTodos() {
         return entityManager.createQuery("FROM Animal a order by a.nome ")
                 .getResultList();
     }
