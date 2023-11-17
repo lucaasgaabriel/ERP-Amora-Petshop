@@ -38,5 +38,4 @@ public class AnimalJpaDao extends EntityJpaDao<Long, Animal> {
                 .getResultList();
     }
 
-
 }
