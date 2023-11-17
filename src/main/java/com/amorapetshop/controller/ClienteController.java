@@ -12,10 +12,10 @@ import com.amorapetshop.model.dao.ClienteJpaDao;
 
 public class ClienteController {
 
-	ClienteJpaDao pessoaDao;
+	ClienteJpaDao clienteDao;
 
 	public ClienteController() {
-		this.pessoaDao = new ClienteJpaDao();
+		this.clienteDao = new ClienteJpaDao();
 	}
 	
 	/**
@@ -23,7 +23,7 @@ public class ClienteController {
 	 * @param cliente
 	 */
 	public void salvar (Cliente cliente) {
-		pessoaDao.salvar(cliente);
+		clienteDao.salvar(cliente);
 	}
 	
 	/**
@@ -31,7 +31,7 @@ public class ClienteController {
 	 * @return
 	 */
 	public List<Cliente> buscarTodos(){
-		return pessoaDao.buscaTodos();
+		return clienteDao.buscaTodos();
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class ClienteController {
 				&& cliente.getTelefone().isEmpty()) {
 			return buscarTodos();
 		}else {
-			return pessoaDao.buscaFiltro(cliente);
+			return clienteDao.buscaFiltro(cliente);
 		}
 	}
 	
@@ -55,7 +55,7 @@ public class ClienteController {
 	 * @param cliente
 	 */
 	public void excluir(Cliente cliente) {
-		pessoaDao.delete(cliente);
+		clienteDao.delete(cliente);
 	}
 	
 }
