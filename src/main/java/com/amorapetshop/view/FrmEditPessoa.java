@@ -261,7 +261,7 @@ public class FrmEditPessoa extends JFrame {
 			String[][] objetos = new String [listaPessoa.size()][3];
 			int i=0;
 			for(Pessoa pessoa:listaPessoa) {
-				objetos[i]= new String[]{pessoa.getNome(),pessoa.getCpf(),pessoa.getEmail()};
+				objetos[i]= new String[]{pessoa.getNome(),pessoa.getCpf()};
 				i++;
 			}
 			
@@ -282,15 +282,8 @@ public class FrmEditPessoa extends JFrame {
 	void preencheCampos(Pessoa pessoa) {
 		txtId.setText(pessoa.getId().toString());
 		txtNome.setText(pessoa.getNome());
-		txtEmail.setText(pessoa.getEmail());
 		txtCpf.setText(pessoa.getCpf());
 		txtTelefone.setText(pessoa.getTelefone());
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy"); 
-		try {
-			txtDtNacimento.setText(formato.format(pessoa.getDataNascimento()));
-		} catch (Exception e) {
-			txtDtNacimento.setText("");
-		}
 		
 		txtSexo.setText(pessoa.getSexo());
 		txtTelefone.setText(pessoa.getTelefone());		
@@ -303,13 +296,7 @@ public class FrmEditPessoa extends JFrame {
 		if(!txtId.getText().isEmpty())
 			pessoaAtual.setId(Long.parseLong(txtId.getText()));
 		pessoaAtual.setCpf(txtCpf.getText());
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy"); 
-		try {
-			pessoaAtual.setDataNascimento(formato.parse(txtDtNacimento.getText()));
-		} catch (ParseException e) {
-			//e.printStackTrace();
-		}
-		pessoaAtual.setEmail(txtEmail.getText());
+
 		pessoaAtual.setNome(txtNome.getText());
 		pessoaAtual.setSexo(txtSexo.getText());
 		pessoaAtual.setTelefone(txtTelefone.getText());		

@@ -38,7 +38,7 @@ public abstract class EntityJpaDao<PK, T> {
     
     /**
      * Busca uma entidade pelo ID
-     * @param entity
+     @param pk
      */
     public T  getById(PK pk) {
         return (T) entityManager.find(getTypeClass(), pk);
@@ -46,7 +46,7 @@ public abstract class EntityJpaDao<PK, T> {
     
     /**
      * Insere uma entidade
-     * @param entity
+     @param entity
      */
     protected void insert(T entity) {
         entityManager.persist(entity);
@@ -54,7 +54,7 @@ public abstract class EntityJpaDao<PK, T> {
  
     /**
      * Atualiza uma entidade
-     * @param entity
+     @param entity
      */
     protected void update(T entity) {
         entityManager.merge(entity);

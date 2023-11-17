@@ -23,16 +23,15 @@ public class PessoaJpaDao extends EntityJpaDao<Long, Pessoa> {
 			rollback();
 		}		
 	}
-	
+
 	public List<Pessoa> buscaFiltro(Pessoa p) {
-        return entityManager.createQuery("FROM Pessoa p where p.nome like "
-        		+ " CONCAT('%',:nome,'%')or p.cpf like :cpf or p.email "
-        		+ " like :email or p.telefone like :telefone order by p.nome ")
-        		.setParameter("nome", p.getNome())
-        		.setParameter("cpf", p.getCpf())
-        		.setParameter("telefone", p.getTelefone())
-        		.getResultList();
-    }
+		return entityManager.createQuery("FROM Pessoa p where p.nome like "
+						+ " CONCAT('%',:nome,'%') or p.cpf like :cpf or p.telefone like :telefone order by p.nome ")
+				.setParameter("nome", p.getNome())
+				.setParameter("cpf", p.getCpf())
+				.setParameter("telefone", p.getTelefone())
+				.getResultList();
+	}
 	
 	public List<Pessoa> buscaTodos() {
         return entityManager.createQuery("FROM Pessoa p order by p.nome ")
