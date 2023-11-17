@@ -1,70 +1,83 @@
 package com.amorapetshop.view;
 
-import com.amorapetshop.controller.ClienteController;
-import com.amorapetshop.model.Cliente;
-
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
-public class ConsultarClienteView {
-    private JTable tableClientes;
-    private JPanel panel1;
+public class ConsultarCliente {
+    private JTable table1;
+    private JPanel ClienteConsultapainel;
     private JButton voltarButton;
-    private JTextField textFieldNome;
-    private JTextField textFieldCpf;
+    private JTextField NomeClinete;
+    private JTextField CPFCliente;
     private JButton cadastrarButton;
     private JButton pesquisarButton;
 
-    private ClienteController clienteController;
-
-    public ConsultarClienteView() {
-        clienteController = new ClienteController();
-
+    public ConsultarCliente() {
+        ClienteConsultapainel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+            }
+        });
         pesquisarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pesquisarClientes();
+
             }
         });
-
         cadastrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Lógica para abrir a tela de cadastro
+                // Obtém a janela atual associada ao botão clicado
+                JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
+
+                // Cria e configura o novo conteúdo (ConsultaAnimal)
+                NovoCliente novoCliente = new NovoCliente();
+                JPanel newconsultapainel = novoCliente.getNovoCLiente();
+
+                // Atualiza o conteúdo da janela atual
+                currentFrame.setContentPane(newconsultapainel);
+
+                // Atualiza a exibição
+                currentFrame.revalidate();
+                currentFrame.repaint();
             }
         });
-
+        table1.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+            }
+        });
         voltarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Lógica para voltar para a tela anterior
+                // Obtém a janela atual associada ao botão clicado
+                JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
+
+                Index index = new Index();
+                JPanel indexpainel = index.getMainIndex();
+
+                // Atualiza o conteúdo da janela atual
+                currentFrame.setContentPane(indexpainel);
+
+                // Atualiza a exibição
+                currentFrame.revalidate();
+                currentFrame.repaint();
+            }
+        });
+        ClienteConsultapainel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
             }
         });
     }
-
-    private void pesquisarClientes() {
-        Cliente clienteFiltro = new Cliente();
-        clienteFiltro.setNome(textFieldNome.getText());
-        clienteFiltro.setCpf(textFieldCpf.getText());
-
-        List<Cliente> clientes = clienteController.buscarFiltro(clienteFiltro);
-
-        // Atualiza a tabela com os resultados da pesquisa
-        DefaultTableModel model = (DefaultTableModel) tableClientes.getModel();
-        model.setRowCount(0);
-
-        for (Cliente cliente : clientes) {
-            model.addRow(new Object[]{cliente.getId(), cliente.getNome(), cliente.getCpf(), cliente.getTelefone()});
-        }
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("ConsultarClienteView");
-        frame.setContentPane(new ConsultarClienteView().panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
+    public JPanel getConsultaClientepainel() {
+        return ClienteConsultapainel;
+    };
 }

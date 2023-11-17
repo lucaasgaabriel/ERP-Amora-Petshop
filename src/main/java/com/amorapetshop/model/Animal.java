@@ -38,5 +38,4 @@ public class Animal {
     public void setRaca(String raca) {
         this.raca = raca;
     }
-
 }

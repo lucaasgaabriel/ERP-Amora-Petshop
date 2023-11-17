@@ -1,9 +1,5 @@
 package com.amorapetshop.controller;
 
-/**
- *  As classes Controllers, reduzem a dependências entre o Model e a View.
- *  tornando o projeto mais flexível, expansível e facilita futuras alterações.
- */
 
 import java.util.List;
 import com.amorapetshop.model.Agendamento;
@@ -18,15 +14,17 @@ public class AgendamentoController {
     }
 
     /**
-     * Salva uma pessoa
      * @param agendamento
      */
     public void salvar (Agendamento agendamento) {
         agendamentoDao.salvar(agendamento);
     }
+    public void excluir(Agendamento agendamento) {
+        agendamentoDao.delete(agendamento);
+    }
+
 
     /**
-     * Retorna todas as pessoas cadastradas
      * @return
      */
     public List<Agendamento> buscarTodos(){
@@ -34,8 +32,6 @@ public class AgendamentoController {
     }
 
     /**
-     * Retorna todas as pessoas cadastradas com base
-     * nos dados da pessoa informada (filtro)
      * @param agendamento
      * @return
      */
@@ -48,13 +44,4 @@ public class AgendamentoController {
             return agendamentoDao.buscaFiltro(agendamento);
         }
     }
-
-    /**
-     * Exclui uma pessoa
-     * @param agendamento
-     */
-    public void excluir(Agendamento agendamento) {
-        agendamentoDao.delete(agendamento);
-    }
-
 }

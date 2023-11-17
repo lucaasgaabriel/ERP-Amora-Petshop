@@ -1,10 +1,5 @@
 package com.amorapetshop.controller;
 
-/**
- *  As classes Controllers, reduzem a dependências entre o Model e a View.
- *  tornando o projeto mais flexível, expansível e facilita futuras alterações. 
- */
-
 import java.util.List;
 
 import com.amorapetshop.model.Cliente;
@@ -19,15 +14,16 @@ public class ClienteController {
 	}
 	
 	/**
-	 * Salva uma cliente
 	 * @param cliente
 	 */
 	public void salvar (Cliente cliente) {
 		clienteDao.salvar(cliente);
 	}
+	public void excluir(Cliente cliente) {
+		clienteDao.delete(cliente);
+	}
 	
 	/**
-	 * Retorna todas as pessoas cadastradas
 	 * @return
 	 */
 	public List<Cliente> buscarTodos(){
@@ -35,8 +31,6 @@ public class ClienteController {
 	}
 	
 	/**
-	 * Retorna todas as pessoas cadastradas com base
-	 * nos dados da cliente informada (filtro)
 	 * @param cliente
 	 * @return
 	 */
@@ -48,14 +42,6 @@ public class ClienteController {
 		}else {
 			return clienteDao.buscaFiltro(cliente);
 		}
-	}
-	
-	/**
-	 * Exclui uma cliente
-	 * @param cliente
-	 */
-	public void excluir(Cliente cliente) {
-		clienteDao.delete(cliente);
 	}
 	
 }

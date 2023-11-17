@@ -1,69 +1,68 @@
-package com.amorapetshop.controller;
+package com.amorapetshop.view;
 
-import com.amorapetshop.model.Funcionario;
-import com.amorapetshop.model.dao.FuncionarioJpaDao;
-import com.amorapetshop.view.ConsultaFuncionario;
-
-import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
-public class ConsultaFuncionarioController {
-    private FuncionarioJpaDao funcionarioDao;
-    private ConsultaFuncionario view;
+public class ConsultaFuncionario {
+    private JTable table1;
+    private JPanel consulta_funcionario_main;
+    private JTextField Matricula;
+    private JTextField Nome_funcionario;
+    private JTextField textField3;
+    private JButton voltarButton;
+    private JButton pesquisarButton;
+    private JButton cadastrarButton;
+    private JPanel Funciojario_consulta;
 
-    public ConsultaFuncionarioController(FuncionarioJpaDao funcionarioDao, ConsultaFuncionario view) {
-        this.funcionarioDao = funcionarioDao;
-        this.view = view;
 
-        view.getPesquisarButton().addActionListener(new ActionListener() {
+    public ConsultaFuncionario() {
+        pesquisarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pesquisarFuncionarios();
+
             }
         });
-
-        view.getCadastrarButton().addActionListener(new ActionListener() {
+        cadastrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Lógica para abrir a tela de cadastro
+
             }
         });
-
-        view.getVoltarButton().addActionListener(new ActionListener() {
+        voltarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Lógica para voltar para a tela anterior
+                // Obtém a janela atual associada ao botão clicado
+                JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
+
+                Index index = new Index();
+                JPanel indexpainel = index.getMainIndex();
+
+                // Atualiza o conteúdo da janela atual
+                currentFrame.setContentPane(indexpainel);
+
+                // Atualiza a exibição
+                currentFrame.revalidate();
+                currentFrame.repaint();
+            }
+        });
+        table1.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+            }
+        });
+        consulta_funcionario_main.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
             }
         });
     }
-
-    private void pesquisarFuncionarios() {
-        String nome = view.getTextField1().getText();
-        String cargo = view.getTextField2().getText();
-        String outroCampo = view.getTextField3().getText();
-
-        Funcionario funcionarioFiltro = new Funcionario();
-        funcionarioFiltro.setNome(nome);
-        funcionarioFiltro.setCargo(cargo);
-        funcionarioFiltro.setOutroCampo(outroCampo);
-
-        List<Funcionario> funcionarios = funcionarioDao.buscaFiltro(funcionarioFiltro);
-
-        // Atualiza a tabela com os resultados da pesquisa
-        DefaultTableModel model = (DefaultTableModel) view.getTable1().getModel();
-        model.setRowCount(0);
-
-        for (Funcionario funcionario : funcionarios) {
-            model.addRow(new Object[]{funcionario.getId(), funcionario.getNome(), funcionario.getCargo(), funcionario.getOutroCampo()});
-        }
-    }
-
-    public static void main(String[] args) {
-        // Supondo que você já tenha uma instância de FuncionarioJpaDao e ConsultaFuncionario
-        FuncionarioJpaDao funcionarioDao = new FuncionarioJpaDao();
-        ConsultaFuncionario consultaFuncionarioView = new ConsultaFuncionario();
-        ConsultaFuncionarioController controller = new ConsultaFuncionarioController(funcionarioDao, consultaFuncionarioView);
+    public JPanel getFunciojario_consulta() {
+        return consulta_funcionario_main;
     }
 }

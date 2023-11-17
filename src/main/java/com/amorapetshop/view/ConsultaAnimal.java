@@ -1,72 +1,51 @@
 package com.amorapetshop.view;
 
-import com.amorapetshop.controller.AnimalController;
 import com.amorapetshop.model.Animal;
+import com.amorapetshop.model.dao.AnimalJpaDao;
+
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
+import java.awt.*;
+import java.awt.event.*;
 
-public class ConsultaAnimalView {
-    private JPanel panel1;
-    private JTable tableAnimais;
-    private JTextField textFieldNome;
-    private JTextField textFieldEspecie;
-    private JTextField textFieldOutroCampo;
+public class ConsultaAnimal {
+    private JTable tabela_animais;
+    private JTextField nome_input_animal;
+    private JTextField Dono_input_animal;
+    private JTextField especie_input_animal;
     private JButton cadastrarButton;
     private JButton pesquisarButton;
     private JButton voltarButton;
+    private JButton editarButton;
+    private JButton excluirButton;
+    private JPanel animais_consulta;
 
-    private AnimalController animalController;
+    private List<Animal> listaDeAnimais;
 
-    public ConsultaAnimalView() {
-        animalController = new AnimalController();
 
-        pesquisarButton.addActionListener(new ActionListener() {
+    public ConsultaAnimal() {
+        listaDeAnimais = new ArrayList<>(); // Você precisará importar java.util.ArrayList
+
+
+        nome_input_animal.addInputMethodListener(new InputMethodListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                pesquisarAnimais();
+            public void inputMethodTextChanged(InputMethodEvent event) {
+
+            }
+
+            @Override
+            public void caretPositionChanged(InputMethodEvent event) {
+
             }
         });
-
-        cadastrarButton.addActionListener(new ActionListener() {
+        Dono_input_animal.addInputMethodListener(new InputMethodListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para abrir a tela de cadastro
+            public void inputMethodTextChanged(InputMethodEvent event) {
+
             }
-        });
-
-        voltarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para voltar para a tela anterior
-            }
-        });
-    }
-
-    private void pesquisarAnimais() {
-        Animal animalFiltro = new Animal();
-        animalFiltro.setNome(textFieldNome.getText());
-        animalFiltro.setEspecie(textFieldEspecie.getText());
-        animalFiltro.setOutroCampo(textFieldOutroCampo.getText());
-
-        List<Animal> animais = animalController.buscarFiltro(animalFiltro);
-
-        // Atualiza a tabela com os resultados da pesquisa
-        DefaultTableModel model = (DefaultTableModel) tableAnimais.getModel();
-        model.setRowCount(0);
-
-        for (Animal animal : animais) {
-            model.addRow(new Object[]{animal.getId(), animal.getNome(), animal.getEspecie(), animal.getOutroCampo()});
-        }
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("ConsultaAnimalView");
-        frame.setContentPane(new ConsultaAnimalView().panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
-}

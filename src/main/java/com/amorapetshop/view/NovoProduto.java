@@ -7,17 +7,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-public class NovoCliente {
-    private JTextField NomeCliente;
-    private JTextField CPFCliente;
-    private JTextField Telefone;
+public class NovoProduto {
+    private JTextField nomeProduto;
+    private JTextField DT_Entrada;
+    private JTextField Valor;
     private JButton cancelarButton;
     private JButton cadastarButton;
-    private JComboBox Sexobox;
-    private JPanel NovoCLiente;
+    private JSpinner Estoque;
+    private JPanel Novoprodutopainel;
 
 
-    public NovoCliente() {
+    public NovoProduto() {
         cadastarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -31,8 +31,8 @@ public class NovoCliente {
                 JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
 
                 // Cria e configura o novo conteúdo (ConsultaAnimal)
-                ConsultarCliente consultarCliente = new ConsultarCliente();
-                JPanel newconsultapainel = consultarCliente.getConsultaClientepainel();
+                ConsultarProduto consultarProduto = new ConsultarProduto();
+                JPanel newconsultapainel = consultarProduto.getProdutoconsulta();
 
                 // Atualiza o conteúdo da janela atual
                 currentFrame.setContentPane(newconsultapainel);
@@ -42,14 +42,14 @@ public class NovoCliente {
                 currentFrame.repaint();
             }
         });
-        NovoCLiente.addComponentListener(new ComponentAdapter() {
+        Novoprodutopainel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
             }
         });
     }
-    public JPanel getNovoCLiente() {
-        return NovoCLiente;
+    public JPanel getNovoprodutopainel(){
+        return Novoprodutopainel;
     };
 }

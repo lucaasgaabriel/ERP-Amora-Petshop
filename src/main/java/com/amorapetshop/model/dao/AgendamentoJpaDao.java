@@ -1,19 +1,14 @@
 package com.amorapetshop.model.dao;
 
-/**
- * Classe especialista para persistência de Agendamento
- */
-
 import java.util.List;
 
 import com.amorapetshop.model.Agendamento;
 
 public class AgendamentoJpaDao extends EntityJpaDao<Long, Agendamento> {
     public void salvar(Agendamento agendamento) {
-
         try {
             begin();
-            if(agendamento.getId()==0l) {
+            if(agendamento.getId()== 0L) {
                 insert(agendamento);
             }else {
                 update(agendamento);
@@ -25,7 +20,18 @@ public class AgendamentoJpaDao extends EntityJpaDao<Long, Agendamento> {
         }
     }
 
-    public List<Agendamento> buscaFiltro(Agendamento a) {
+    public void excluir(Agendamento agendamento) {
+        try {
+            begin();
+            delete(agendamento);
+            commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            rollback();
+        }
+    }
+
+    public List buscaFiltro(Agendamento a) {
         return entityManager.createQuery("FROM Agendamento a where a.responsavel like "
                         + " CONCAT('%',:responsavel,'%') or a.tipoAgendamento like :tipoAgendamento order by a.tipoAgendamento ")
                 .setParameter("responsavel", a.getResponsavel())
@@ -33,7 +39,7 @@ public class AgendamentoJpaDao extends EntityJpaDao<Long, Agendamento> {
                 .getResultList();
     }
 
-    public List<Agendamento> buscaTodos() {
+    public List buscaTodos() {
         return entityManager.createQuery("FROM Agendamento a order by a.tipoAgendamento ")
                 .getResultList();
     }

@@ -1,10 +1,7 @@
 package com.amorapetshop.model.dao;
 
-/**
- * Classe especialista para persistência de Cliente
- */
-
 import java.util.List;
+
 import com.amorapetshop.model.Cliente;
 
 public class ClienteJpaDao extends EntityJpaDao<Long, Cliente> {
@@ -12,7 +9,7 @@ public class ClienteJpaDao extends EntityJpaDao<Long, Cliente> {
 		
 		try {
 			begin();
-			if(cliente.getId()==0l) {
+			if(cliente.getId()== 0L) {
 				insert(cliente);
 			}else {
 				update(cliente);
@@ -23,8 +20,18 @@ public class ClienteJpaDao extends EntityJpaDao<Long, Cliente> {
 			rollback();
 		}		
 	}
+	public void excluir(Cliente cliente) {
+		try {
+			begin();
+			delete(cliente);
+			commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollback();
+		}
+	}
 
-	public List<Cliente> buscaFiltro(Cliente c) {
+	public List buscaFiltro(Cliente c) {
 		return entityManager.createQuery("FROM Cliente c where c.nome like "
 						+ " CONCAT('%',:nome,'%') or c.cpf like :cpf or c.telefone like :telefone order by c.nome ")
 				.setParameter("nome", c.getNome())
@@ -33,10 +40,9 @@ public class ClienteJpaDao extends EntityJpaDao<Long, Cliente> {
 				.getResultList();
 	}
 	
-	public List<Cliente> buscaTodos() {
+	public List buscaTodos() {
         return entityManager.createQuery("FROM Cliente c order by c.nome ")
         		     		.getResultList();
     }
-	
 	
 }
