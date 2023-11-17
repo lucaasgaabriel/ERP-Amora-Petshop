@@ -79,13 +79,37 @@ public class Index extends JFrame {
         clienteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Obtém a janela atual associada ao botão clicado
+                JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
 
+                // Cria e configura o novo conteúdo (ConsultaAnimal)
+                ConsultarCliente consultarCliente = new ConsultarCliente();
+                JPanel newconsultapainel = consultarCliente.getConsultaClientepainel();
+
+                // Atualiza o conteúdo da janela atual
+                currentFrame.setContentPane(newconsultapainel);
+
+                // Atualiza a exibição
+                currentFrame.revalidate();
+                currentFrame.repaint();
             }
         });
         produtoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Obtém a janela atual associada ao botão clicado
+                JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
 
+                // Cria e configura o novo conteúdo (ConsultaAnimal)
+                ConsultarProduto consultarProduto = new ConsultarProduto();
+                JPanel newconsultapainel = consultarProduto.getProdutoconsulta();
+
+                // Atualiza o conteúdo da janela atual
+                currentFrame.setContentPane(newconsultapainel);
+
+                // Atualiza a exibição
+                currentFrame.revalidate();
+                currentFrame.repaint();
             }
         });
         mainIndex.addComponentListener(new ComponentAdapter() {
