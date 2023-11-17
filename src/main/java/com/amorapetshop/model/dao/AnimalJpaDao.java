@@ -1,7 +1,7 @@
 package com.amorapetshop.model.dao;
 
 /**
- * Classe especialista para persistência de Pessoa
+ * Classe especialista para persistência de Cliente
  */
 
 import java.util.List;

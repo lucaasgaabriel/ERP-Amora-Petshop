@@ -11,8 +11,9 @@ import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
-import com.amorapetshop.controller.PessoaController;
-import com.amorapetshop.model.Pessoa;
+import com.amorapetshop.controller.ClienteController;
+import com.amorapetshop.model.Cliente;
+
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
@@ -22,7 +23,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.ParseException;
 
 public class FrmEditPessoa extends JFrame {
 	//Campos declareados como atributos (Globais na classe)
@@ -37,20 +37,20 @@ public class FrmEditPessoa extends JFrame {
 	private DefaultTableModel modelo;
 	
 	//Lista que irá carregar a tabela
-	private List<Pessoa> listaPessoa = new ArrayList<>();
-	//Pessoa que irá espelhar os campos
-	private Pessoa pessoaAtual = new Pessoa();
-	//Controller responsavel por persistir Pessoa
-	private PessoaController pessoaController;
+	private List<Cliente> listaCliente = new ArrayList<>();
+	//Cliente que irá espelhar os campos
+	private Cliente clienteAtual = new Cliente();
+	//Controller responsavel por persistir Cliente
+	private ClienteController clienteController;
 
 	/**
 	 * Método construtor do formulário
 	 */
 	public FrmEditPessoa(){
-		pessoaController = new PessoaController();
+		clienteController = new ClienteController();
 		
 		//cofiguração do formulário
-		setTitle("Manter Pessoa");
+		setTitle("Manter Cliente");
 		setSize(700,495);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -68,7 +68,7 @@ public class FrmEditPessoa extends JFrame {
 		
 		
 		/*Inseindo os campos no formulário*/
-		JLabel lblTitulo = new JLabel("Cadastro de Pessoa");
+		JLabel lblTitulo = new JLabel("Cadastro de Cliente");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panelSuperior.add(lblTitulo);
 		
@@ -167,8 +167,8 @@ public class FrmEditPessoa extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				//verifica a linha que foi clicada
 				int linha = tablePessoa.getSelectedRow();
-				pessoaAtual = listaPessoa.get(linha);
-				preencheCampos(pessoaAtual);
+				clienteAtual = listaCliente.get(linha);
+				preencheCampos(clienteAtual);
 			}
 		});
 		tablePessoa.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -199,7 +199,7 @@ public class FrmEditPessoa extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				txtId.setText("");
 				carregaPessoaAtual();
-				listaPessoa = pessoaController.buscarFiltro(pessoaAtual);
+				listaCliente = clienteController.buscarFiltro(clienteAtual);
 				carregarTabela();
 			}
 		});
@@ -209,8 +209,8 @@ public class FrmEditPessoa extends JFrame {
 		JButton btnNovo = new JButton("Novo");
 		btnNovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pessoaAtual = new Pessoa();
-				preencheCampos(pessoaAtual);
+				clienteAtual = new Cliente();
+				preencheCampos(clienteAtual);
 			}
 		});
 		btnNovo.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -220,9 +220,9 @@ public class FrmEditPessoa extends JFrame {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				carregaPessoaAtual();
-				pessoaController.salvar(pessoaAtual);
-				txtId.setText(pessoaAtual.getId().toString());
-				listaPessoa = pessoaController.buscarTodos();
+				clienteController.salvar(clienteAtual);
+				txtId.setText(clienteAtual.getId().toString());
+				listaCliente = clienteController.buscarTodos();
 				carregarTabela();
 			}
 		});
@@ -232,10 +232,10 @@ public class FrmEditPessoa extends JFrame {
 		JButton btnExcluir = new JButton("Excluir");
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pessoaController.excluir(pessoaAtual);
-				pessoaAtual=new Pessoa();
-				preencheCampos(pessoaAtual);
-				listaPessoa = pessoaController.buscarTodos();
+				clienteController.excluir(clienteAtual);
+				clienteAtual =new Cliente();
+				preencheCampos(clienteAtual);
+				listaCliente = clienteController.buscarTodos();
 				carregarTabela();
 			}
 		});
@@ -257,10 +257,10 @@ public class FrmEditPessoa extends JFrame {
 	public void carregarTabela() {
 			String[] colunas = {"Nome", "CPF","e-mail"};
 	        			
-			String[][] objetos = new String [listaPessoa.size()][3];
+			String[][] objetos = new String [listaCliente.size()][3];
 			int i=0;
-			for(Pessoa pessoa:listaPessoa) {
-				objetos[i]= new String[]{pessoa.getNome(),pessoa.getCpf()};
+			for(Cliente cliente : listaCliente) {
+				objetos[i]= new String[]{cliente.getNome(), cliente.getCpf()};
 				i++;
 			}
 			
@@ -275,29 +275,29 @@ public class FrmEditPessoa extends JFrame {
 	}
 	
 	/**
-	 * Insere nos campos, os dados de uma pessoa
-	 * @param pessoa
+	 * Insere nos campos, os dados de uma cliente
+	 * @param cliente
 	 */
-	void preencheCampos(Pessoa pessoa) {
-		txtId.setText(pessoa.getId().toString());
-		txtNome.setText(pessoa.getNome());
-		txtCpf.setText(pessoa.getCpf());
-		txtTelefone.setText(pessoa.getTelefone());
+	void preencheCampos(Cliente cliente) {
+		txtId.setText(cliente.getId().toString());
+		txtNome.setText(cliente.getNome());
+		txtCpf.setText(cliente.getCpf());
+		txtTelefone.setText(cliente.getTelefone());
 		
-		txtSexo.setText(pessoa.getSexo());
-		txtTelefone.setText(pessoa.getTelefone());		
+		txtSexo.setText(cliente.getSexo());
+		txtTelefone.setText(cliente.getTelefone());
 	}
 	
 	/**
-	 * Carrega para a Pessoa Atual os dados que estão no formulário
+	 * Carrega para a Cliente Atual os dados que estão no formulário
 	 */
 	void carregaPessoaAtual() {
 		if(!txtId.getText().isEmpty())
-			pessoaAtual.setId(Long.parseLong(txtId.getText()));
-		pessoaAtual.setCpf(txtCpf.getText());
+			clienteAtual.setId(Long.parseLong(txtId.getText()));
+		clienteAtual.setCpf(txtCpf.getText());
 
-		pessoaAtual.setNome(txtNome.getText());
-		pessoaAtual.setSexo(txtSexo.getText());
-		pessoaAtual.setTelefone(txtTelefone.getText());		
+		clienteAtual.setNome(txtNome.getText());
+		clienteAtual.setSexo(txtSexo.getText());
+		clienteAtual.setTelefone(txtTelefone.getText());
 	}
 }
