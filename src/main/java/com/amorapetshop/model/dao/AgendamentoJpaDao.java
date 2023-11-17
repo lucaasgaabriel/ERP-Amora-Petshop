@@ -8,7 +8,7 @@ public class AgendamentoJpaDao extends EntityJpaDao<Long, Agendamento> {
     public void salvar(Agendamento agendamento) {
         try {
             begin();
-            if(agendamento.getId()==0l) {
+            if(agendamento.getId()== 0L) {
                 insert(agendamento);
             }else {
                 update(agendamento);

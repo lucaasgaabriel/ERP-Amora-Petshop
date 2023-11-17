@@ -7,11 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-
-
-/**
- * Classe Abastrata DAO genérica
- */
 public abstract class EntityJpaDao<PK, T> {
 	//informar o nome da unidade de persistencia
 	//criada no persistence.xml
@@ -75,7 +70,7 @@ public abstract class EntityJpaDao<PK, T> {
     /**
      * Retorna a lista de elementos
      */
-    public List<T> findAll() {
+    public List findAll() {
         return entityManager.createQuery(("FROM " + getTypeClass().getName()))
                 .getResultList();
     }

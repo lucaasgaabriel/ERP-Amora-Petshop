@@ -9,7 +9,7 @@ public class ClienteJpaDao extends EntityJpaDao<Long, Cliente> {
 		
 		try {
 			begin();
-			if(cliente.getId()==0l) {
+			if(cliente.getId()== 0L) {
 				insert(cliente);
 			}else {
 				update(cliente);

@@ -8,7 +8,7 @@ public class ProdutoJpaDao extends EntityJpaDao<Long, Produto> {
 
         try {
             begin();
-            if(produto.getId()==0l) {
+            if(produto.getId()== 0L) {
                 insert(produto);
             }else {
                 update(produto);
