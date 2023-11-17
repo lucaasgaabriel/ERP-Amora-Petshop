@@ -23,7 +23,19 @@ public class Index extends JFrame {
         servicosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Obtém a janela atual associada ao botão clicado
+                JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
 
+                // Cria e configura o novo conteúdo (ConsultaAnimal)
+                NovoAgendamento Novo_agendamento = new NovoAgendamento();
+                JPanel Novo_agendamentoPainel = Novo_agendamento.getAgendemano_painel_new();
+
+                // Atualiza o conteúdo da janela atual
+                currentFrame.setContentPane(Novo_agendamentoPainel);
+
+                // Atualiza a exibição
+                currentFrame.revalidate();
+                currentFrame.repaint();
             }
         });
         animalButton.addActionListener(new ActionListener() {

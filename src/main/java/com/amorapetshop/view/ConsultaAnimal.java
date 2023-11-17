@@ -101,7 +101,6 @@ public class ConsultaAnimal {
                 // Atualiza a exibição
                 currentFrame.revalidate();
                 currentFrame.repaint();
-
             }
         });
         tabela_animais.addComponentListener(new ComponentAdapter() {
