@@ -7,35 +7,37 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+
+
 /**
  * Classe Abastrata DAO genérica
  */
 public abstract class EntityJpaDao<PK, T> {
-	//informar o nome da unidade de persistencia 
+	//informar o nome da unidade de persistencia
 	//criada no persistence.xml
-	private String persistenceUnitName = "projetoPU";
-	
+	private String persistenceUnitName = "academicoPU";
+
 	protected EntityManager entityManager;
- 
+
     public EntityJpaDao() {
-        EntityManagerFactory factory = 
+        EntityManagerFactory factory =
         		Persistence
         		.createEntityManagerFactory(persistenceUnitName);
     	this.entityManager = factory.createEntityManager();
     }
-    
+
     public void commit() {
-    	entityManager.getTransaction().commit();    	
+    	entityManager.getTransaction().commit();
     }
-    
+
     public void begin() {
     	entityManager.getTransaction().begin();
     }
-    
+
     public void rollback() {
     	entityManager.getTransaction().rollback();
     }
-    
+
     /**
      * Busca uma entidade pelo ID
      @param pk
@@ -43,7 +45,7 @@ public abstract class EntityJpaDao<PK, T> {
     public T  getById(PK pk) {
         return (T) entityManager.find(getTypeClass(), pk);
     }
-    
+
     /**
      * Insere uma entidade
      @param entity
@@ -51,7 +53,7 @@ public abstract class EntityJpaDao<PK, T> {
     protected void insert(T entity) {
         entityManager.persist(entity);
     }
- 
+
     /**
      * Atualiza uma entidade
      @param entity
@@ -59,7 +61,7 @@ public abstract class EntityJpaDao<PK, T> {
     protected void update(T entity) {
         entityManager.merge(entity);
     }
- 
+
     /**
      * Exclui uma entidade
      * @param entity
@@ -87,6 +89,6 @@ public abstract class EntityJpaDao<PK, T> {
                 .getGenericSuperclass()).getActualTypeArguments()[1];
         return clazz;
     }
-    
+
 }
 

@@ -54,12 +54,26 @@ public class Index extends JFrame {
                 // Atualiza a exibição
                 currentFrame.revalidate();
                 currentFrame.repaint();
+
+                consultaAnimal.carregarTodosDados();
             }
         });
         funcionarioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Obtém a janela atual associada ao botão clicado
+                JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
 
+                // Cria e configura o novo conteúdo (ConsultaAnimal)
+                ConsultaFuncionario consultaFuncionario = new ConsultaFuncionario();
+                JPanel newconsultapainel = consultaFuncionario.getFunciojario_consulta();
+
+                // Atualiza o conteúdo da janela atual
+                currentFrame.setContentPane(newconsultapainel);
+
+                // Atualiza a exibição
+                currentFrame.revalidate();
+                currentFrame.repaint();
             }
         });
         clienteButton.addActionListener(new ActionListener() {

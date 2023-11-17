@@ -1,5 +1,15 @@
 package com.amorapetshop.view;
 
+import com.amorapetshop.model.Animal;
+import com.amorapetshop.model.dao.AnimalJpaDao;
+
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -16,8 +26,13 @@ public class ConsultaAnimal {
     private JButton excluirButton;
     private JPanel animais_consulta;
 
+    private List<Animal> listaDeAnimais;
+
 
     public ConsultaAnimal() {
+        listaDeAnimais = new ArrayList<>(); // Você precisará importar java.util.ArrayList
+
+
         nome_input_animal.addInputMethodListener(new InputMethodListener() {
             @Override
             public void inputMethodTextChanged(InputMethodEvent event) {
@@ -71,6 +86,37 @@ public class ConsultaAnimal {
         pesquisarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                pesquisarButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Obtém os critérios de pesquisa do formulário
+                        String nome = nome_input_animal.getText();
+                        String especie = especie_input_animal.getText();
+                        String raca = Dono_input_animal.getText();
+
+                        // Cria uma instância de Animal com os critérios de pesquisa
+                        Animal animalConsulta = new Animal();
+                        animalConsulta.setNome(nome);
+                        animalConsulta.setEspecie(especie);
+                        animalConsulta.setRaca(raca);
+
+                        // Chama o método buscaFiltro no back-end
+                        AnimalJpaDao animalDao = new AnimalJpaDao();
+                        List<Animal> resultados = animalDao.buscaFiltro(animalConsulta);
+
+                        // Atualiza o modelo da tabela com os resultados
+                        DefaultTableModel modeloTabela = (DefaultTableModel) tabela_animais.getModel();
+
+                        // Limpa o modelo antes de adicionar os novos resultados
+                        modeloTabela.setRowCount(0);
+
+                        // Adiciona os resultados ao modelo da tabela
+                        for (Animal animal : resultados) {
+                            Object[] rowData = {animal.getId(), animal.getNome(), animal.getEspecie(), animal.getRaca()};
+                            modeloTabela.addRow(rowData);
+                        }
+                    }
+                });
 
             }
         });
@@ -116,9 +162,24 @@ public class ConsultaAnimal {
                 super.componentResized(e);
             }
         });
+
+
     }
 
     public JPanel getAnimaisConsulta() {
         return animais_consulta;
+    }
+
+    public void carregarTodosDados() {
+        AnimalJpaDao animalDao = new AnimalJpaDao();
+        List<Animal> todosAnimais = animalDao.buscaTodos();
+
+        DefaultTableModel modeloTabela = (DefaultTableModel) tabela_animais.getModel();
+        modeloTabela.setRowCount(0);
+
+        for (Animal animal : todosAnimais) {
+            Object[] rowData = {animal.getId(), animal.getNome(), animal.getEspecie(), animal.getRaca()};
+            modeloTabela.addRow(rowData);
+        }
     }
 }
