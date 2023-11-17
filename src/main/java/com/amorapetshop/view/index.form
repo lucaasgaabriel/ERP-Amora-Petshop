@@ -51,6 +51,14 @@
                   <text value="Funcionario"/>
                 </properties>
               </component>
+              <component id="eb6f5" class="javax.swing.JButton" binding="produtoButton" default-binding="true">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Produto"/>
+                </properties>
+              </component>
               <component id="e85f7" class="javax.swing.JButton" binding="clienteButton" default-binding="true">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -65,14 +73,6 @@
                 </constraints>
                 <properties>
                   <text value="Animal"/>
-                </properties>
-              </component>
-              <component id="eb6f5" class="javax.swing.JButton" binding="produtoButton" default-binding="true">
-                <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Produto"/>
                 </properties>
               </component>
             </children>
