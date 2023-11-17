@@ -4,7 +4,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		FrmEditPessoa frm = new FrmEditPessoa();
+		FrmEditCliente frm = new FrmEditCliente();
 		//mostra o formulario
 		frm.setVisible(true);
 		
