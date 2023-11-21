@@ -11,7 +11,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date
+import java.util.Date;
 
 public class NovoProduto {
     private JTextField nomeProduto;
@@ -22,38 +22,46 @@ public class NovoProduto {
     private JSpinner Estoque;
     private JPanel Novoprodutopainel;
 
+    private ProdutoController produtoController;
+
 
     public NovoProduto() {
-        ProdutoController produtoController = new ProdutoController();
+        produtoController = new ProdutoController();
 
         cadastarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String formatoData = "dd-MM-aaaa";
+                String formatoData = "dd-MM-yyyy";
                 SimpleDateFormat format = new SimpleDateFormat(formatoData);
+
                 // Obtenha os dados do animal dos campos de texto
                 String nome = nomeProduto.getText();
                 String dataString = DT_Entrada.getText();
-                String valor = Valor.getText();
+                String valorString = Valor.getText();
+
+                Integer estoque = (Integer) Estoque.getValue();
 
                 try {
                     Date data = format.parse(dataString);
-                    // Crie uma instância da entidade Animal com os dados
-                    Produto novoProduto = new Produto();
-                    novoProduto.setNome(nome);
-                    novoProduto.setDataEntrada(data);
-                    novoProduto.setValor(valor);
 
-                    produtoController.salvar(novoProduto);
+                    try {
+                        // Convertendo a string para um valor double
+                        double valor = Double.parseDouble(valorString);
 
+                        // Crie uma instância da entidade Animal com os dados
+                        Produto novoProduto = new Produto();
+                        novoProduto.setNome(nome);
+                        novoProduto.setDataEntrada(data);
+                        novoProduto.setValor(valor);
+                        novoProduto.setQuantidade(estoque);
+                        novoProduto.getDataSaida();
+
+                        produtoController.salvar(novoProduto);
+                    } catch (NumberFormatException x) {
+                        x.printStackTrace();
+                    }
                 } catch (ParseException x) {
                     x.printStackTrace();
-
-
-
-
-
-
 
                 // Limpe os campos de texto ou faça outras ações após o cadastro
                 nomeProduto.setText("");
@@ -61,7 +69,7 @@ public class NovoProduto {
                 Valor.setText("");
 
             }
-        });
+        }});
         cancelarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

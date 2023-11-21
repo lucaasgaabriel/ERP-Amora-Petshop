@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 public class Produto {
     @Id @GeneratedValue
-    private Long id;
+    private Long id=0l;
     private String nome;
     private Date dataEntrada;
     private Date dataSaida;

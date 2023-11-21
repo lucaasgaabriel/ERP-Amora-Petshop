@@ -171,6 +171,12 @@ public class ConsultaAnimal {
         tablepainel.add(scroll);
 
         animais_consulta.add(tablepainel);
+        animais_consulta.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+            }
+        });
     }
 
     public JPanel getAnimaisConsulta() {
