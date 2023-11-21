@@ -8,7 +8,7 @@ import javax.persistence.Id;
 @Entity
 public class Cliente {
 	@Id @GeneratedValue
-	private Long id;
+	private Long id= 0L;
 	private String nome;
 	private String cpf;
 	private String telefone;
