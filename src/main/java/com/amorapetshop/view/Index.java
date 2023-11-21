@@ -55,7 +55,7 @@ public class Index extends JFrame {
                 currentFrame.revalidate();
                 currentFrame.repaint();
 
-                consultaAnimal.carregarTodosDados();
+                //consultaAnimal.carregarTodosDados();
             }
         });
         funcionarioButton.addActionListener(new ActionListener() {

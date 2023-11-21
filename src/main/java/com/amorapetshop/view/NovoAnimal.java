@@ -1,6 +1,6 @@
 package com.amorapetshop.view;
 
-import com.amorapetshop.model.dao.AnimalJpaDao;
+import com.amorapetshop.controller.AnimalController;
 import com.amorapetshop.model.Animal;
 
 import javax.swing.*;
@@ -17,7 +17,10 @@ public class NovoAnimal {
     private JPanel frame_animal;
     private JPanel frame_animal_titulo;
 
+    private AnimalController animalController;
+
     public NovoAnimal() {
+        animalController = new AnimalController();
         cadastarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -26,17 +29,13 @@ public class NovoAnimal {
                 String especieAnimal = epsecie.getText();
                 String racaAnimal = raca.getText();
 
-                // Crie uma instância do AnimalJpaDao
-                AnimalJpaDao animalDao = new AnimalJpaDao();
-
                 // Crie uma instância da entidade Animal com os dados
                 Animal novoAnimal = new Animal();
                 novoAnimal.setNome(nomeAnimal);
                 novoAnimal.setEspecie(especieAnimal);
                 novoAnimal.setRaca(racaAnimal);
 
-                // Chame o método no DAO para salvar o animal
-                animalDao.salvar(novoAnimal);
+                animalController.salvar(novoAnimal);
 
                 // Limpe os campos de texto ou faça outras ações após o cadastro
                 nome.setText("");

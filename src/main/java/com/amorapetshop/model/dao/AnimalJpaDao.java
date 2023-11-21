@@ -16,9 +16,9 @@ public class AnimalJpaDao extends EntityJpaDao<Long, Animal> {
 
         try {
             begin();
-            if(animal.getId()== 0L) {
+            if (animal.getId() == 0l) {
                 insert(animal);
-            }else {
+            } else {
                 update(animal);
             }
             commit();

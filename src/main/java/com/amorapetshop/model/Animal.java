@@ -8,7 +8,7 @@ import javax.persistence.Id;
 @Entity
 public class Animal {
     @Id @GeneratedValue
-    private Long id;
+    private Long id=0l;
     private String nome;
     private String especie;
     private String raca;
