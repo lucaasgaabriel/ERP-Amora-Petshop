@@ -10,7 +10,7 @@ import javax.persistence.Persistence;
 public abstract class EntityJpaDao<PK, T> {
 	//informar o nome da unidade de persistencia
 	//criada no persistence.xml
-	private String persistenceUnitName = "academicoPU";
+	private String persistenceUnitName = "localhost";
 
 	protected EntityManager entityManager;
 
