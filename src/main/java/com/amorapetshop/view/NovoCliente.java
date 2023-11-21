@@ -1,5 +1,9 @@
 package com.amorapetshop.view;
 
+import com.amorapetshop.controller.ClienteController;
+import com.amorapetshop.model.Animal;
+import com.amorapetshop.model.Cliente;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,9 +22,27 @@ public class NovoCliente {
 
 
     public NovoCliente() {
+        ClienteController clienteController = new ClienteController();
         cadastarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Obtenha os dados do cliente dos campos de texto
+                String nome = NomeCliente.getText();
+                String cpf = CPFCliente.getText();
+                String numero = Telefone.getText();
+
+                // Crie uma instância da entidade Animal com os dados
+                Cliente novoCliente = new Cliente();
+                novoCliente.setNome(nome);
+                novoCliente.setCpf(cpf);
+                novoCliente.setTelefone(numero);
+
+                clienteController.salvar(novoCliente);
+
+                // Limpe os campos de texto ou faça outras ações após o cadastro
+                NomeCliente.setText("");
+                CPFCliente.setText("");
+                Telefone.setText("");
 
             }
         });
