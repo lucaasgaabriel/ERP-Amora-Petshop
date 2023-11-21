@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 public class Agendamento {
     @Id @GeneratedValue
-    private Long id;
+    private Long id=0l;
     private String tipoAgendamento;
     private Date dataAgendamento;
     private String horaAgendamento;

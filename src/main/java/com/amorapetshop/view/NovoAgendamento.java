@@ -26,38 +26,6 @@ public class NovoAgendamento {
         tipoAgendamento.addInputMethodListener(new InputMethodListener() {
             @Override
             public void inputMethodTextChanged(InputMethodEvent event) {
-                String formatoData = "dd-MM-yyyy";
-                SimpleDateFormat format = new SimpleDateFormat(formatoData);
-
-                // Obtenha os dados do agendamento dos campos de texto
-                String nome = tipoAgendamento.getText();
-                String dataString = Data_agendamento.getText();
-                String hora = HR_Agendamento.getText();
-                String responsavel = Responsavel_Agendamento.getText();
-
-
-                try {
-                    Date data = format.parse(dataString);
-
-                    // Crie uma instância da entidade Animal com os dados
-                    Agendamento novoAgendamento = new Agendamento();
-                    novoAgendamento.setTipoAgendamento(nome);
-                    novoAgendamento.setDataAgendamento(data);
-                    novoAgendamento.setHoraAgendamento(hora);
-                    novoAgendamento.setResponsavel(responsavel);
-
-                    agendamentoController.salvar(novoAgendamento);
-
-                } catch (ParseException x) {
-                    x.printStackTrace();
-
-
-                }
-                // Limpe os campos de texto ou faça outras ações após o cadastro
-                tipoAgendamento.setText("");
-                Data_agendamento.setText("");
-                HR_Agendamento.setText("");
-                Responsavel_Agendamento.setText("");
             };
 
             @Override
@@ -101,7 +69,38 @@ public class NovoAgendamento {
         cadastarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String formatoData = "dd-MM-yyyy";
+                SimpleDateFormat format = new SimpleDateFormat(formatoData);
 
+                // Obtenha os dados do agendamento dos campos de texto
+                String nome = tipoAgendamento.getText();
+                String dataString = Data_agendamento.getText();
+                String hora = HR_Agendamento.getText();
+                String responsavel = Responsavel_Agendamento.getText();
+
+
+                try {
+                    Date data = format.parse(dataString);
+
+                    // Crie uma instância da entidade Animal com os dados
+                    Agendamento novoAgendamento = new Agendamento();
+                    novoAgendamento.setTipoAgendamento(nome);
+                    novoAgendamento.setDataAgendamento(data);
+                    novoAgendamento.setHoraAgendamento(hora);
+                    novoAgendamento.setResponsavel(responsavel);
+
+                    agendamentoController.salvar(novoAgendamento);
+
+                } catch (ParseException x) {
+                    x.printStackTrace();
+
+
+                }
+                // Limpe os campos de texto ou faça outras ações após o cadastro
+                tipoAgendamento.setText("");
+                Data_agendamento.setText("");
+                HR_Agendamento.setText("");
+                Responsavel_Agendamento.setText("");
             }
         });
         cancelarButton.addActionListener(new ActionListener() {
