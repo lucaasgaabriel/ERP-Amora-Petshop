@@ -4,6 +4,9 @@ import java.util.List;
 import com.amorapetshop.model.Animal;
 import com.amorapetshop.model.dao.AnimalJpaDao;
 
+import java.util.Collections;
+
+
 public class AnimalController {
 
     AnimalJpaDao animalDao;
@@ -32,12 +35,11 @@ public class AnimalController {
      * @return
      */
     public List<Animal> buscarFiltro(Animal animal){
-
-        if(animal.getNome().isEmpty() && animal.getNome().isEmpty()
-                && animal.getEspecie().isEmpty()) {
-            return buscarTodos();
-        }else {
+        try {
             return animalDao.buscaFiltro(animal);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList(); // ou trate a exceção de forma apropriada
         }
     }
 }

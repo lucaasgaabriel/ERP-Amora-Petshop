@@ -16,31 +16,50 @@ public class NovoAnimal {
     private JPanel main_frame_aminal_cadastro;
     private JPanel frame_animal;
     private JPanel frame_animal_titulo;
-
     private AnimalController animalController;
+    private long animalId;
+    private JTextField idTextField;
 
     public NovoAnimal() {
         animalController = new AnimalController();
+
         cadastarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Obtenha os dados do animal dos campos de texto
-                String nomeAnimal = nome.getText();
-                String especieAnimal = epsecie.getText();
-                String racaAnimal = raca.getText();
 
-                // Crie uma instância da entidade Animal com os dados
-                Animal novoAnimal = new Animal();
-                novoAnimal.setNome(nomeAnimal);
-                novoAnimal.setEspecie(especieAnimal);
-                novoAnimal.setRaca(racaAnimal);
+                if (animalId != 0L) {
+                    // Edição de um animal existente
+                    String nomeAnimal = nome.getText();
+                    String especieAnimal = epsecie.getText();
+                    String racaAnimal = raca.getText();
 
-                animalController.salvar(novoAnimal);
+                    Animal animalEditado = new Animal();
+                    animalEditado.setId(animalId);
+                    animalEditado.setNome(nomeAnimal);
+                    animalEditado.setEspecie(especieAnimal);
+                    animalEditado.setRaca(racaAnimal);
 
-                // Limpe os campos de texto ou faça outras ações após o cadastro
-                nome.setText("");
-                epsecie.setText("");
-                raca.setText("");
+                    // Chame o método de salvar no controlador
+                    animalController.salvar(animalEditado);
+                } else {
+                    // Novo cadastro de animal
+                    String nomeAnimal = nome.getText();
+                    String especieAnimal = epsecie.getText();
+                    String racaAnimal = raca.getText();
+
+                    Animal novoAnimal = new Animal();
+                    novoAnimal.setNome(nomeAnimal);
+                    novoAnimal.setEspecie(especieAnimal);
+                    novoAnimal.setRaca(racaAnimal);
+
+                    // Chame o método de salvar no controlador
+                    animalController.salvar(novoAnimal);
+
+                    // Limpe os campos de texto ou faça outras ações após o cadastro
+                    nome.setText("");
+                    epsecie.setText("");
+                    raca.setText("");
+                }
             }
         });
         cancelarButton.addActionListener(new ActionListener() {
@@ -70,5 +89,21 @@ public class NovoAnimal {
     }
     public JPanel getMain_frame_aminal_cadastro() {
         return main_frame_aminal_cadastro;
+    }
+
+
+    public void setNome(String nome) {
+        this.nome.setText(nome);
+    }
+
+    public void setEspecie(String epsecie) {
+        this.epsecie.setText(epsecie);
+    }
+
+    public void setRaca(String raca) {
+        this.raca.setText(raca);
+    }
+    public void setAnimalId(long id) {
+        this.animalId = id;
     }
 }

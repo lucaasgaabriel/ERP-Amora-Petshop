@@ -11,12 +11,12 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 
 
+
 public class AnimalJpaDao extends EntityJpaDao<Long, Animal> {
     public void salvar(Animal animal) {
-
         try {
             begin();
-            if (animal.getId() == 0l) {
+            if (animal.getId() == 0L) {
                 insert(animal);
             } else {
                 update(animal);
