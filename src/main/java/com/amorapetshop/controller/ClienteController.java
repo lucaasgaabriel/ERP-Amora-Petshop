@@ -1,5 +1,6 @@
 package com.amorapetshop.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.amorapetshop.model.Cliente;
@@ -20,7 +21,7 @@ public class ClienteController {
 		clienteDao.salvar(cliente);
 	}
 	public void excluir(Cliente cliente) {
-		clienteDao.delete(cliente);
+		clienteDao.excluir(cliente);
 	}
 	
 	/**
@@ -35,12 +36,11 @@ public class ClienteController {
 	 * @return
 	 */
 	public List<Cliente> buscarFiltro(Cliente cliente){
-		
-		if(cliente.getNome().isEmpty() && cliente.getCpf().isEmpty()
-				&& cliente.getTelefone().isEmpty()) {
-			return buscarTodos();
-		}else {
+		try {
 			return clienteDao.buscaFiltro(cliente);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Collections.emptyList(); // ou trate a exceção de forma apropriada
 		}
 	}
 	

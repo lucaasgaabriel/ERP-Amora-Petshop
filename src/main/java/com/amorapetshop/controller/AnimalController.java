@@ -1,11 +1,10 @@
 package com.amorapetshop.controller;
 
+import java.util.Collections;
 import java.util.List;
+
 import com.amorapetshop.model.Animal;
 import com.amorapetshop.model.dao.AnimalJpaDao;
-
-import java.util.Collections;
-
 
 public class AnimalController {
 

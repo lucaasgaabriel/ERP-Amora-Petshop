@@ -56,6 +56,7 @@ public class NovoProduto {
                             produtoEditado.setId(produtoId);
                             produtoEditado.setNome(nome);
                             produtoEditado.setDataEntrada(data);
+                            produtoEditado.setValor(valor);
                             produtoEditado.setQuantidade(estoque);
                             produtoEditado.getDataSaida();
 
@@ -72,11 +73,6 @@ public class NovoProduto {
 
                             produtoController.salvar(novoProduto);
                         }
-                        // Limpe os campos de texto ou faça outras ações após o cadastro
-                        nomeProduto.setText("");
-                        DT_Entrada.setText("");
-                        Valor.setText("");
-                        Estoque.setValue(0);
 
                     } catch (NumberFormatException x) {
                         x.printStackTrace();
@@ -84,6 +80,11 @@ public class NovoProduto {
                 } catch (ParseException x) {
                     x.printStackTrace();
             }
+                // Limpe os campos de texto ou faça outras ações após o cadastro
+                nomeProduto.setText("");
+                DT_Entrada.setText("");
+                Valor.setText("");
+                Estoque.setValue(0);
         }});
         cancelarButton.addActionListener(new ActionListener() {
             @Override
@@ -127,9 +128,8 @@ public class NovoProduto {
         // Defina a string formatada no componente de interface gráfica
         this.DT_Entrada.setText(dataFormatada);
     }
-
-    public void setValor(String valor) {
-        this.Valor.setText(valor);
+    public void setValor(Double valor) {
+        this.Valor.setText(String.valueOf(valor));
     }
     public void setEstoque(Integer estoque) {
         // Verifique se o valor de estoque não é nulo antes de tentar definir

@@ -1,5 +1,6 @@
 package com.amorapetshop.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.amorapetshop.model.Produto;
@@ -20,7 +21,7 @@ public class ProdutoController {
         produtoDao.salvar(produto);
     }
     public void excluir(Produto produto) {
-        produtoDao.delete(produto);
+        produtoDao.excluir(produto);
     }
 
     /**
@@ -35,12 +36,11 @@ public class ProdutoController {
      * @return
      */
     public List buscarFiltro(Produto produto){
-
-        if(produto.getNome().isEmpty()
-                ) {
-            return buscarTodos();
-        }else {
+        try {
             return produtoDao.buscaFiltro(produto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList(); // ou trate a exceção de forma apropriada
         }
     }
 

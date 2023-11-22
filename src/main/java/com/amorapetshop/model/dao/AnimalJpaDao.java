@@ -32,7 +32,6 @@ public class AnimalJpaDao extends EntityJpaDao<Long, Animal> {
 
     public void excluir(Animal animal) {
         EntityTransaction transaction = null;
-
         try {
             // Inicia a transação
             transaction = entityManager.getTransaction();
@@ -54,8 +53,6 @@ public class AnimalJpaDao extends EntityJpaDao<Long, Animal> {
             e.printStackTrace();
         }
     }
-
-
 
     public List<Animal> buscaFiltro(Animal a) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

@@ -12,7 +12,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import java.sql.Timestamp;
+import java.util.Objects;
+
 
 public class ConsultarProduto {
     private JPanel Produtoconsulta;
@@ -33,32 +40,53 @@ public class ConsultarProduto {
     private List<Produto> produto;
 
     public ConsultarProduto() {
+        produtoController = new ProdutoController();
         pesquisarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String formatoData = "dd-MM-yyyy";
+                SimpleDateFormat format = new SimpleDateFormat(formatoData);
+
                 // Obtém os critérios de pesquisa do formulário
                 String nome = Nome_produlto.getText();
-                String data = Data_Entrada.getText();
-                String valor = valorProduto.getText();
+                String dataString = Data_Entrada.getText();
+                String valorString = valorProduto.getText();
 
-                // Cria uma instância de Animal com os critérios de pesquisa
-                Produto produtoConsulta = new Produto();
-                produtoConsulta.setNome(nome);
-                produtoConsulta.setDataSaida(data);
-                produtoConsulta.setValor(valor);
+                try {
+                    Produto produtoConsulta = new Produto();
 
-                // Chama o método buscarComFiltro no back-end
-                List<Produto> resultados = produtoController.buscarFiltro(produtoConsulta);
+                    // Verifica e configura o critério de pesquisa por nome
+                    if (!nome.isEmpty()) {
+                        produtoConsulta.setNome(nome);
+                    }
 
-                // Atualiza a tabela com os resultados da pesquisa
-                atualizarTabela(resultados);
+                    // Verifica e configura o critério de pesquisa por data
+                    if (!dataString.isEmpty()) {
+                        Date data = format.parse(dataString);
+                        produtoConsulta.setDataEntrada(data);
+                    }
 
-                Nome_produlto.setText("");
-                Data_Entrada.setText("");
-                valorProduto.setText("");
+                    // Verifica e configura o critério de pesquisa por valor
+                    if (!valorString.isEmpty()) {
+                        double valor = Double.parseDouble(valorString);
+                        produtoConsulta.setValor(valor);
+                    }
+
+                    // Chama o método buscarComFiltro no back-end
+                    List<Produto> resultados = produtoController.buscarFiltro(produtoConsulta);
+
+                    // Atualiza a tabela com os resultados da pesquisa
+                    atualizarTabela(resultados);
+
+                } catch (ParseException | NumberFormatException ex) {
+                    ex.printStackTrace(); // ou trate o erro de outra forma
+                } finally {
+                    // Limpa os campos após a pesquisa
+                    Nome_produlto.setText("");
+                    Data_Entrada.setText("");
+                    valorProduto.setText("");
+                }
             }
-
-
         });
         cadastrarButton.addActionListener(new ActionListener() {
             @Override
@@ -98,7 +126,83 @@ public class ConsultarProduto {
         editarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int selectedRow = TabelaProduto.getSelectedRow();
+                if (selectedRow != -1) {
+                    String formatoData = "dd/MM/yyyy HH:mm:ss";
+                    SimpleDateFormat format = new SimpleDateFormat(formatoData);
 
+                    // Obtém os dados da linha selecionada
+                    long id = (long) TabelaProduto.getValueAt(selectedRow, 0);
+                    String nome = (String) TabelaProduto.getValueAt(selectedRow, 1);
+
+                    // Obtém o valor da célula da data (tipo java.sql.Timestamp)
+                    Object dataCell = TabelaProduto.getValueAt(selectedRow, 2);
+                    String dataString = "";
+
+                    if (dataCell instanceof java.sql.Timestamp) {
+                        java.sql.Timestamp timestamp = (java.sql.Timestamp) dataCell;
+                        // Formata a data como uma string
+                        dataString = format.format(new Date(timestamp.getTime()));
+                    } else {
+                        // Lida com outros tipos de valores que podem estar na célula
+                        // (nesse caso, você pode atribuir diretamente)
+                        dataString = dataCell.toString();
+                    }
+
+                    Object valorCell = TabelaProduto.getValueAt(selectedRow, 3);
+                    String valorString = "";
+
+                    if (valorCell instanceof Double) {
+                        // Converte o valor Double para String
+                        valorString = Double.toString((Double) valorCell);
+                    } else {
+                        // Se não for um Double, converte para String diretamente
+                        valorString = valorCell.toString();
+                    }
+
+                    try {
+                        // Convertendo a string para um valor double
+                        double valor = Double.parseDouble(valorString);
+
+                        // Restante do seu código...
+                    } catch (NumberFormatException x) {
+                        x.printStackTrace();
+                    }
+
+                    Integer quantidade = (Integer) TabelaProduto.getValueAt(selectedRow, 4);
+
+                    try {
+                        Date data = format.parse(dataString);
+                        try {
+                            // Convertendo a string para um valor double
+                            double valor = Double.parseDouble(valorString);
+
+                            JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
+                            NovoProduto telaedicao = new NovoProduto();
+
+                            telaedicao.setProdutoId(id);
+                            telaedicao.setNomeProduto(nome);
+                            telaedicao.setDT_Entrada(data);
+                            telaedicao.setValor(valor);
+                            telaedicao.setEstoque(quantidade);
+
+                            // Atualiza o conteúdo da janela atual
+                            currentFrame.setContentPane(telaedicao.getNovoprodutopainel());
+
+                            // Atualiza a exibição
+                            currentFrame.revalidate();
+                            currentFrame.repaint();
+                        } catch (NumberFormatException x) {
+                            x.printStackTrace();
+                        }
+                    } catch (ParseException x) {
+                        x.printStackTrace();
+                    }
+                } else {
+                    // Se nenhuma linha estiver selecionada, exiba uma mensagem de erro
+                    JOptionPane.showMessageDialog(null, "Por favor, selecione uma linha para editar.",
+                            "Nenhuma Linha Selecionada", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         excluirButton.addActionListener(new ActionListener() {
@@ -112,42 +216,50 @@ public class ConsultarProduto {
                     // Obtém os dados da linha selecionada
                     long id = (long) TabelaProduto.getValueAt(selectedRow, 0);
                     String nome = (String) TabelaProduto.getValueAt(selectedRow, 1);
-                    String data = (String) TabelaProduto.getValueAt(selectedRow, 2);
-                    String valor = (String) TabelaProduto.getValueAt(selectedRow, 3);
-                    String quantidade = (String) TabelaProduto.getValueAt(selectedRow, 4);
+                    Timestamp timestamp = (Timestamp) TabelaProduto.getValueAt(selectedRow, 2);
+                    Object valorObj = TabelaProduto.getValueAt(selectedRow, 3);
+                    String valorString = Objects.toString(valorObj, "");
+                    Integer quantidade = (Integer) TabelaProduto.getValueAt(selectedRow, 4);
 
-                    // Cria uma instância de Animal com os dados da linha selecionada
-                    Produto produtoParaExcluir = new Produto();
-                    produtoParaExcluir.setId(id);
-                    produtoParaExcluir.setNome(nome);
-                    produtoParaExcluir.setDataEntrada(data);
-                    produtoParaExcluir.setValor(valor);
-                    produtoParaExcluir.setQuantidade(quantidade);
+                    // Converte o Timestamp para uma String formatada
+                    Date data = new Date(timestamp.getTime());
+                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                    String dataString = format.format(data);
 
-                    // Confirmação de exclusão
-                    int option = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir este produto?", "Confirmação de exclusão", JOptionPane.YES_NO_OPTION);
+                    try {
+                        // Convertendo a string para um valor double
+                        double valor = Double.parseDouble(valorString);
 
-                    if (option == JOptionPane.YES_OPTION) {
-                        // Realiza a exclusão do animal no banco de dados
-                        produtoController.excluir(produtoParaExcluir);
+                        // Cria uma instância de Produto com os dados da linha selecionada
+                        Produto produtoParaExcluir = new Produto();
+                        produtoParaExcluir.setId(id);
+                        produtoParaExcluir.setNome(nome);
+                        produtoParaExcluir.setDataEntrada(data);
+                        produtoParaExcluir.setDataSaida(null);
+                        produtoParaExcluir.setValor(valor);
+                        produtoParaExcluir.setQuantidade(quantidade);
 
-                        // Chama o método buscarComFiltro no back-end
-                        List<Produto> resultados = produtoController.buscarFiltro(produtoParaExcluir);
+                        int option = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir este produto?", "Confirmação de exclusão", JOptionPane.YES_NO_OPTION);
 
-                        // Atualiza a tabela com os resultados da pesquisa
-                        atualizarTabela(resultados);
+                        if (option == JOptionPane.YES_OPTION) {
+                            // Realiza a operação de exclusão
+                            produtoController.excluir(produtoParaExcluir);
 
-                        // Atualiza a tabela após a exclusão
-                        carregarDadosNaTabela();
+                            // Atualiza a tabela após a exclusão
+                            carregarDadosNaTabela();
+                        }
+
+                    } catch (NumberFormatException | HeadlessException x) {
+                        x.printStackTrace();
                     }
                 } else {
                     // Se nenhuma linha estiver selecionada, exiba uma mensagem de erro
                     JOptionPane.showMessageDialog(null, "Por favor, selecione uma linha para excluir.",
                             "Nenhuma Linha Selecionada", JOptionPane.ERROR_MESSAGE);
                 }
-
             }
         });
+
         TabelaProduto.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -184,6 +296,7 @@ public class ConsultarProduto {
                 super.componentResized(e);
             }
         });
+        carregarDadosNaTabela();
     }
     private void carregarDadosNaTabela() {
         // Limpa os dados existentes na tabela
