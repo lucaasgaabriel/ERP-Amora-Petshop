@@ -9,6 +9,8 @@ import com.amorapetshop.model.Animal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.TypedQuery;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 
 
@@ -29,15 +31,30 @@ public class AnimalJpaDao extends EntityJpaDao<Long, Animal> {
     }
 
     public void excluir(Animal animal) {
+        EntityTransaction transaction = null;
+
         try {
-            begin();
-            delete(animal);
-            commit();
+            // Inicia a transação
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+
+            // Recarrega a entidade para garantir que ela seja gerenciada pela sessão
+            animal = entityManager.find(Animal.class, animal.getId());
+
+            // Realiza a operação de exclusão
+            entityManager.remove(animal);
+
+            // Comita a transação se tudo ocorreu sem problemas
+            transaction.commit();
         } catch (Exception e) {
+            // Em caso de exceção, realiza o rollback da transação
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
             e.printStackTrace();
-            rollback();
         }
     }
+
 
 
     public List<Animal> buscaFiltro(Animal a) {

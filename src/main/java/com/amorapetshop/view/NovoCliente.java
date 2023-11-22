@@ -52,15 +52,13 @@ public class NovoCliente {
                     novoCliente.setSexo(sexo);
 
                     clienteController.salvar(novoCliente);
+
+                    // Limpe os campos de texto ou faça outras ações após o cadastro
+                    NomeCliente.setText("");
+                    CPFCliente.setText("");
+                    Telefone.setText("");
+                    Sexobox.setSelectedIndex(0);
                 }
-
-
-                // Limpe os campos de texto ou faça outras ações após o cadastro
-                NomeCliente.setText("");
-                CPFCliente.setText("");
-                Telefone.setText("");
-                Sexobox.setSelectedIndex(0);
-
             }
         });
         cancelarButton.addActionListener(new ActionListener() {

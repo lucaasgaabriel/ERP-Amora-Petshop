@@ -42,7 +42,6 @@ public class NovoProduto {
                 String nome = nomeProduto.getText();
                 String dataString = DT_Entrada.getText();
                 String valorString = Valor.getText();
-
                 Integer estoque = (Integer) Estoque.getValue();
 
                 try {
@@ -51,7 +50,6 @@ public class NovoProduto {
                     try {
                         // Convertendo a string para um valor double
                         double valor = Double.parseDouble(valorString);
-
 
                         if (produtoId != 0L) {
                             Produto produtoEditado = new Produto();
@@ -74,20 +72,17 @@ public class NovoProduto {
 
                             produtoController.salvar(novoProduto);
                         }
-
+                        // Limpe os campos de texto ou faça outras ações após o cadastro
+                        nomeProduto.setText("");
+                        DT_Entrada.setText("");
+                        Valor.setText("");
+                        Estoque.setValue(0);
 
                     } catch (NumberFormatException x) {
                         x.printStackTrace();
                     }
                 } catch (ParseException x) {
                     x.printStackTrace();
-
-                // Limpe os campos de texto ou faça outras ações após o cadastro
-                nomeProduto.setText("");
-                DT_Entrada.setText("");
-                Valor.setText("");
-                Estoque.setValue(0);
-
             }
         }});
         cancelarButton.addActionListener(new ActionListener() {

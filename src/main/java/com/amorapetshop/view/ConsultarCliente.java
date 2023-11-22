@@ -33,6 +33,7 @@ public class ConsultarCliente {
     private ClienteController clienteController;
 
     public ConsultarCliente() {
+        clienteController = new ClienteController();
         pesquisarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -143,7 +144,38 @@ public class ConsultarCliente {
         Editar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int selectedRow = tabelaCliente.getSelectedRow();
+                if (selectedRow != -1) {
+                    // Obtém os dados da linha selecionada
+                    long id = (long) tabelaCliente.getValueAt(selectedRow, 0);
+                    String nome = (String) tabelaCliente.getValueAt(selectedRow, 1);
+                    String cpf = (String) tabelaCliente.getValueAt(selectedRow, 2);
+                    String telefone = (String) tabelaCliente.getValueAt(selectedRow, 3);
+                    String sexo = (String) tabelaCliente.getValueAt(selectedRow, 4);
 
+
+                    // Obtém a janela atual associada ao botão clicado
+                    JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
+                    NovoCliente telaEdicao = new NovoCliente();
+
+                    telaEdicao.setClienteIdId(id);
+                    telaEdicao.setNome(nome);
+                    telaEdicao.setCPFCliente(cpf);
+                    telaEdicao.setTelefone(telefone);
+                    telaEdicao.setSexo(sexo);
+
+                    // Atualiza o conteúdo da janela atual
+                    currentFrame.setContentPane(telaEdicao.getNovoCLiente());
+
+                    // Atualiza a exibição
+                    currentFrame.revalidate();
+                    currentFrame.repaint();
+                } else {
+                    // Se nenhuma linha estiver selecionada, exiba uma mensagem de erro
+                    JOptionPane.showMessageDialog(null, "Por favor, selecione uma linha para editar.",
+                            "Nenhuma Linha Selecionada", JOptionPane.ERROR_MESSAGE);
+
+                }
             }
         });
         tabelaCliente.addComponentListener(new ComponentAdapter() {
@@ -152,8 +184,8 @@ public class ConsultarCliente {
                 super.componentResized(e);
             }
         });
-        String[] colunas = {"id","Nome", "CPF"};
-        String[][] objetos = {{"", "", ""}};
+        String[] colunas = {"id","Nome", "CPF","Telefone","Sexo"};
+        String[][] objetos = {{"", "", "", "", ""}};
 
         tableModel = new DefaultTableModel(objetos, colunas) {
             @Override
@@ -183,6 +215,7 @@ public class ConsultarCliente {
                 super.componentResized(e);
             }
         });
+        carregarDadosNaTabela();
     }
     private void carregarDadosNaTabela() {
         // Limpa os dados existentes na tabela
