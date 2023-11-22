@@ -2,8 +2,6 @@ package com.amorapetshop.view;
 
 import com.amorapetshop.controller.AgendamentoController;
 import com.amorapetshop.model.Agendamento;
-import com.amorapetshop.model.Cliente;
-import com.amorapetshop.model.Produto;
 
 import javax.swing.*;
 import java.awt.*;
