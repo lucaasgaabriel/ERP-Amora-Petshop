@@ -8,6 +8,10 @@ import java.awt.event.ComponentEvent;
 import java.awt.Component;
 
 
+import javax.swing.*;
+import java.awt.*;
+
+
 public class Index extends JFrame {
 
     private JPanel titulo_index;
@@ -18,6 +22,7 @@ public class Index extends JFrame {
     private JButton clienteButton;
     private JButton servicosButton;
     private JPanel mainIndex;
+    private JLabel Logo;
 
     public Index() {
         servicosButton.addActionListener(new ActionListener() {
@@ -112,6 +117,19 @@ public class Index extends JFrame {
                 currentFrame.repaint();
             }
         });
+        //Logo = new JLabel();
+
+        Logo = new JLabel();
+
+        Logo.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+            }
+        });
+
+        Logo.setIcon(new ImageIcon(getClass().getResource("amorapetLogo.png")));
+
         mainIndex.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
