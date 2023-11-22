@@ -15,6 +15,7 @@ public class Produto {
     private Date dataSaida;
     private Double valor;
     private Integer quantidade;
+    private String codigoEAN;
 
 
     public Long getId() {
@@ -49,4 +50,8 @@ public class Produto {
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
+
+    public String getCodigoEAN() {return codigoEAN;}
+
+    public void setCodigoEAN(String codigoEAN) {this.codigoEAN = codigoEAN;}
 }
