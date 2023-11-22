@@ -14,6 +14,7 @@ public class Agendamento {
     private Date dataAgendamento;
     private String horaAgendamento;
     private String responsavel;
+    private Double precoOrcamento;
 
 
     public Long getId() {
@@ -43,4 +44,6 @@ public class Agendamento {
         this.responsavel = responsavel;
     }
 
+    public Double getPrecoOrcamento() {return precoOrcamento;}
+    public void setPrecoOrcamento(Double precoOrcamento) {this.precoOrcamento = precoOrcamento;}
 }

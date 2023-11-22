@@ -12,6 +12,7 @@ public class Animal {
     private String nome;
     private String especie;
     private String raca;
+    private String dono;
 
 
     public Long getId() {
@@ -38,4 +39,7 @@ public class Animal {
     public void setRaca(String raca) {
         this.raca = raca;
     }
+    public String getDono(){return dono;}
+
+    public void setDono(String dono) {this.dono = dono;}
 }

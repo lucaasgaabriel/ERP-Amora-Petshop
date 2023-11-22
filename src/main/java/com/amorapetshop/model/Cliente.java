@@ -13,6 +13,7 @@ public class Cliente {
 	private String cpf;
 	private String telefone;
 	private String sexo;
+	private String donoAnimal;
 
 	
 	public Long getId() {
@@ -46,5 +47,8 @@ public class Cliente {
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
 	}
-	
+
+	public String getDonoAnimal() {return donoAnimal;}
+
+	public void setDonoAnimal(String donoAnimal) {this.donoAnimal = donoAnimal;}
 }
