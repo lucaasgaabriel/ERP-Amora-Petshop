@@ -19,7 +19,7 @@ public class NovoCliente {
     private JButton cadastarButton;
     private JComboBox Sexobox;
     private JPanel NovoCLiente;
-
+    private long clienteId;
 
     public NovoCliente() {
         ClienteController clienteController = new ClienteController();
@@ -30,19 +30,36 @@ public class NovoCliente {
                 String nome = NomeCliente.getText();
                 String cpf = CPFCliente.getText();
                 String numero = Telefone.getText();
+                String sexo= (String) Sexobox.getSelectedItem();
 
-                // Crie uma instância da entidade Animal com os dados
-                Cliente novoCliente = new Cliente();
-                novoCliente.setNome(nome);
-                novoCliente.setCpf(cpf);
-                novoCliente.setTelefone(numero);
+                if (clienteId != 0L) {
+                    Cliente clienteEditado = new Cliente();
+                    clienteEditado.setId(clienteId);
+                    clienteEditado.setNome(nome);
+                    clienteEditado.setCpf(cpf);
+                    clienteEditado.setTelefone(numero);
+                    clienteEditado.setSexo(sexo);
 
-                clienteController.salvar(novoCliente);
+                    // Chame o método de salvar no controlador
+                    clienteController.salvar(clienteEditado);
+                } else {
+
+                    // Crie uma instância da entidade Animal com os dados
+                    Cliente novoCliente = new Cliente();
+                    novoCliente.setNome(nome);
+                    novoCliente.setCpf(cpf);
+                    novoCliente.setTelefone(numero);
+                    novoCliente.setSexo(sexo);
+
+                    clienteController.salvar(novoCliente);
+                }
+
 
                 // Limpe os campos de texto ou faça outras ações após o cadastro
                 NomeCliente.setText("");
                 CPFCliente.setText("");
                 Telefone.setText("");
+                Sexobox.setSelectedIndex(0);
 
             }
         });
@@ -74,4 +91,36 @@ public class NovoCliente {
     public JPanel getNovoCLiente() {
         return NovoCLiente;
     };
+
+    public void setNome(String nome) {
+        this.NomeCliente.setText(nome);
+    }
+
+    public void setCPFCliente(String cpf) {
+        this.CPFCliente.setText(cpf);
+    }
+
+    public void setTelefone(String numero) {
+        this.Telefone.setText(numero);
+    }
+    public void setSexo(String sexo) {
+        // Obter o modelo do JComboBox
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) Sexobox.getModel();
+
+        // Encontrar o índice do sexo no modelo
+        int index = -1;
+        for (int i = 0; i < model.getSize(); i++) {
+            if (model.getElementAt(i).equals(sexo)) {
+                index = i;
+                break;
+            }
+        }
+
+        // Definir o índice selecionado no JComboBox
+        Sexobox.setSelectedIndex(index);
+    }
+
+    public void setClienteIdId(long id) {
+        this.clienteId = id;
+    }
 }
