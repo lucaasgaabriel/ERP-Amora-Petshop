@@ -27,12 +27,11 @@ public class NovoAnimal {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (animalId != 0L) {
-                    // Edição de um animal existente
-                    String nomeAnimal = nome.getText();
-                    String especieAnimal = epsecie.getText();
-                    String racaAnimal = raca.getText();
+                String nomeAnimal = nome.getText();
+                String especieAnimal = epsecie.getText();
+                String racaAnimal = raca.getText();
 
+                if (animalId != 0L) {
                     Animal animalEditado = new Animal();
                     animalEditado.setId(animalId);
                     animalEditado.setNome(nomeAnimal);
@@ -42,11 +41,6 @@ public class NovoAnimal {
                     // Chame o método de salvar no controlador
                     animalController.salvar(animalEditado);
                 } else {
-                    // Novo cadastro de animal
-                    String nomeAnimal = nome.getText();
-                    String especieAnimal = epsecie.getText();
-                    String racaAnimal = raca.getText();
-
                     Animal novoAnimal = new Animal();
                     novoAnimal.setNome(nomeAnimal);
                     novoAnimal.setEspecie(especieAnimal);
