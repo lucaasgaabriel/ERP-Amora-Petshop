@@ -1,7 +1,8 @@
 package com.amorapetshop.view;
 
+import com.amorapetshop.controller.ClienteController;
 import com.amorapetshop.model.Animal;
-import com.amorapetshop.model.dao.AnimalJpaDao;
+import com.amorapetshop.model.Cliente;
 import com.amorapetshop.controller.AnimalController;
 import javax.swing.table.TableColumnModel;
 
@@ -16,7 +17,7 @@ import java.awt.event.*;
 
 public class ConsultaAnimal {
     private JTextField nome_input_animal;
-    private JTextField Dono_input_animal;
+    private JTextField raca_input_animal;
     private JTextField especie_input_animal;
     private JButton novoButton;
     private JButton pesquisarButton;
@@ -28,6 +29,7 @@ public class ConsultaAnimal {
     private JPanel CabecalhoAnimais;
     private JPanel ConteudoAnimais;
     private JPanel RodapeAnimais;
+    private JTextField dono_input_animal;
     private DefaultTableModel tableModel;
     private AnimalController animalController;
     private List<Animal> animais;
@@ -59,7 +61,7 @@ public class ConsultaAnimal {
                 // Obtém os critérios de pesquisa do formulário
                 String nome = nome_input_animal.getText();
                 String especie = especie_input_animal.getText();
-                String raca = Dono_input_animal.getText();
+                String raca = raca_input_animal.getText();
 
                 // Cria uma instância de Animal com os critérios de pesquisa
                 Animal animalConsulta = new Animal();
@@ -75,7 +77,7 @@ public class ConsultaAnimal {
 
                 nome_input_animal.setText("");
                 especie_input_animal.setText("");
-                Dono_input_animal.setText("");
+                raca_input_animal.setText("");
             }
         });
         excluirButton.addActionListener(new ActionListener() {
@@ -91,6 +93,7 @@ public class ConsultaAnimal {
                     String nome = (String) TableaAnimais.getValueAt(selectedRow, 1);
                     String especie = (String) TableaAnimais.getValueAt(selectedRow, 2);
                     String raca = (String) TableaAnimais.getValueAt(selectedRow, 3);
+                    Long dono = (Long) TableaAnimais.getValueAt(selectedRow, 4);
 
                     // Cria uma instância de Animal com os dados da linha selecionada
                     Animal animalParaExcluir = new Animal();
@@ -98,6 +101,7 @@ public class ConsultaAnimal {
                     animalParaExcluir.setNome(nome);
                     animalParaExcluir.setEspecie(especie);
                     animalParaExcluir.setRaca(raca);
+                    animalParaExcluir.setDono(dono);
 
                     // Confirmação de exclusão
                     int option = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir este animal?", "Confirmação de exclusão", JOptionPane.YES_NO_OPTION);
@@ -133,6 +137,7 @@ public class ConsultaAnimal {
                     String nome = (String) TableaAnimais.getValueAt(selectedRow, 1);
                     String especie = (String) TableaAnimais.getValueAt(selectedRow, 2);
                     String raca = (String) TableaAnimais.getValueAt(selectedRow, 3);
+                    Long dono = (Long) TableaAnimais.getValueAt(selectedRow, 4);
 
                     // Crie a tela de edição
                     JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
@@ -143,6 +148,7 @@ public class ConsultaAnimal {
                     telaEdicao.setNome(nome);
                     telaEdicao.setEspecie(especie);
                     telaEdicao.setRaca(raca);
+                    telaEdicao.setDono(dono);
 
                     // Atualize o conteúdo da janela atual
                     currentFrame.setContentPane(telaEdicao.getMain_frame_aminal_cadastro());
@@ -182,8 +188,8 @@ public class ConsultaAnimal {
         });
 
 
-        String[] colunas = {"id","Nome", "Especie", "Raça"};
-        String[][] objetos = {{"", "", ""}};
+        String[] colunas = {"id","Nome", "Especie", "Raça", "Dono"};
+        String[][] objetos = {{"", "", "", "", ""}};
 
         tableModel = new DefaultTableModel(objetos, colunas) {
             @Override
@@ -224,8 +230,27 @@ public class ConsultaAnimal {
 
         // Preenche a tabela com os dados obtidos
         for (Animal animal : animais) {
-            tableModel.addRow(new Object[]{animal.getId(), animal.getNome(), animal.getEspecie(), animal.getRaca()});
-            // Adicione mais colunas conforme necessário
+            Long idDono = animal.getDono();
+
+            // Realiza a busca do cliente pelo ID do dono
+            ClienteController clienteController = new ClienteController();
+
+            // Crie uma instância de Cliente com o ID fornecido
+            Cliente clienteConsulta = new Cliente();
+            clienteConsulta.setId(idDono);
+
+            // Realize a consulta para obter as informações do cliente pelo ID
+            List<Cliente> clientes = clienteController.buscarFiltro(clienteConsulta);
+
+            // Verifica se o cliente foi encontrado
+            if (!clientes.isEmpty()) {
+                // Assume que a busca retornará apenas um cliente (ou você pode lidar com múltiplos resultados conforme necessário)
+                Cliente cliente = clientes.get(0);
+
+                // Adiciona a linha na tabela com o nome do dono em vez do ID
+                tableModel.addRow(new Object[]{animal.getId(), animal.getNome(), animal.getEspecie(), animal.getRaca(), cliente.getNome()});
+                // Adicione mais colunas conforme necessário
+            }
         }
     }
     private void atualizarTabela(List<Animal> resultados) {
@@ -234,8 +259,27 @@ public class ConsultaAnimal {
 
         // Preenche a tabela com os dados obtidos
         for (Animal animal : resultados) {
-            tableModel.addRow(new Object[]{animal.getId(), animal.getNome(), animal.getEspecie(), animal.getRaca()});
-            // Adicione mais colunas conforme necessário
+            Long idDono = animal.getDono();
+
+            // Realiza a busca do cliente pelo ID do dono
+            ClienteController clienteController = new ClienteController();
+
+            // Crie uma instância de Cliente com o ID fornecido
+            Cliente clienteConsulta = new Cliente();
+            clienteConsulta.setId(idDono);
+
+            // Realize a consulta para obter as informações do cliente pelo ID
+            List<Cliente> clientes = clienteController.buscarFiltro(clienteConsulta);
+
+            // Verifica se o cliente foi encontrado
+            if (!clientes.isEmpty()) {
+                // Assume que a busca retornará apenas um cliente (ou você pode lidar com múltiplos resultados conforme necessário)
+                Cliente cliente = clientes.get(0);
+
+                // Adiciona a linha na tabela com o nome do dono em vez do ID
+                tableModel.addRow(new Object[]{animal.getId(), animal.getNome(), animal.getEspecie(), animal.getRaca(), cliente.getNome()});
+                // Adicione mais colunas conforme necessário
+            }
         }
     }
     public JPanel getAnimaisConsulta() {

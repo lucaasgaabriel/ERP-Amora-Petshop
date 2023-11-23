@@ -3,6 +3,10 @@ package com.amorapetshop.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+
+import com.amorapetshop.model.Cliente;
 
 
 @Entity
@@ -12,7 +16,9 @@ public class Animal {
     private String nome;
     private String especie;
     private String raca;
-    private String dono;
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Cliente dono;
 
 
     public Long getId() {
@@ -39,7 +45,10 @@ public class Animal {
     public void setRaca(String raca) {
         this.raca = raca;
     }
-    public String getDono(){return dono;}
-
-    public void setDono(String dono) {this.dono = dono;}
+    public Cliente getDono() {
+        return dono;
+    }
+    public void setDono(Cliente dono) {
+        this.dono = dono;
+    }
 }

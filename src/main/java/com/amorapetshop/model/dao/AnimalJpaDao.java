@@ -5,6 +5,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import com.amorapetshop.model.Animal;
+import com.amorapetshop.model.Cliente;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,26 +60,37 @@ public class AnimalJpaDao extends EntityJpaDao<Long, Animal> {
     public List<Animal> buscaFiltro(Animal a) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Animal> criteriaQuery = criteriaBuilder.createQuery(Animal.class);
-        Root<Animal> root = criteriaQuery.from(Animal.class);
+        Root<Animal> rootAnimal = criteriaQuery.from(Animal.class);
+        Join<Animal, Cliente> joinCliente = rootAnimal.join("dono", JoinType.INNER);
 
         List<Predicate> predicates = new ArrayList<>();
 
         if (a.getNome() != null && !a.getNome().isEmpty()) {
-            predicates.add(criteriaBuilder.like(root.get("nome"), "%" + a.getNome() + "%"));
+            predicates.add(criteriaBuilder.like(rootAnimal.get("nome"), "%" + a.getNome() + "%"));
         }
         if (a.getEspecie() != null && !a.getEspecie().isEmpty()) {
-            predicates.add(criteriaBuilder.like(root.get("especie"), "%" + a.getEspecie() + "%"));
+            predicates.add(criteriaBuilder.like(rootAnimal.get("especie"), "%" + a.getEspecie() + "%"));
         }
         if (a.getRaca() != null && !a.getRaca().isEmpty()) {
-            predicates.add(criteriaBuilder.like(root.get("raca"), "%" + a.getRaca() + "%"));
+            predicates.add(criteriaBuilder.like(rootAnimal.get("raca"), "%" + a.getRaca() + "%"));
+        }
+        //pesquisar o nome do cliente e comparar o id do cliente com o valor do campo dono
+        //get nome do cliente
+        if (a.getDono() != null && a.getDono().isEmpty()) {
+            predicates.add(criteriaBuilder.equal(rootAnimal.get("dono"), a.getDono()));
         }
 
+
+
         criteriaQuery.where(predicates.toArray(new Predicate[0]));
-        criteriaQuery.orderBy(criteriaBuilder.asc(root.get("nome")));
+        criteriaQuery.orderBy(criteriaBuilder.asc(rootAnimal.get("nome")));
 
         TypedQuery<Animal> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
     }
+
+
+
 
     public List buscaTodos() {
         return entityManager.createQuery("FROM Animal a order by a.nome ")

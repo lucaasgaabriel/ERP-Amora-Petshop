@@ -76,6 +76,9 @@ public class ClienteJpaDao extends EntityJpaDao<Long, Cliente> {
 		if (c.getTelefone() != null && !c.getTelefone().isEmpty()) {
 			predicates.add(criteriaBuilder.like(root.get("telefone"), "%" + c.getTelefone() + "%"));
 		}
+		if (c.getId() != null && c.getId() != 0L) {
+			predicates.add(criteriaBuilder.equal(root.get("id"), c.getId()));
+		}
 
 		criteriaQuery.where(predicates.toArray(new Predicate[0]));
 		criteriaQuery.orderBy(criteriaBuilder.asc(root.get("nome")));

@@ -14,7 +14,6 @@ import java.awt.*;
 
 public class Index extends JFrame {
 
-    private JPanel titulo_index;
     private JPanel botoes_index;
     private JButton produtoButton;
     private JButton animalButton;
@@ -23,6 +22,7 @@ public class Index extends JFrame {
     private JButton servicosButton;
     private JPanel mainIndex;
     private JLabel Logo;
+    private JButton button1;
 
     public Index() {
         servicosButton.addActionListener(new ActionListener() {
@@ -119,23 +119,19 @@ public class Index extends JFrame {
         });
         //Logo = new JLabel();
 
-        Logo = new JLabel();
-
-        Logo.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                super.componentResized(e);
-            }
-        });
-
-        Logo.setIcon(new ImageIcon(getClass().getResource("amorapetLogo.png")));
-
         mainIndex.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
             }
         });
+        produtoButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        animalButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        funcionarioButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        clienteButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        servicosButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        botoes_index.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
     };
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
