@@ -8,10 +8,16 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
+import java.awt.Component;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+
+import com.amorapetshop.view.NovoClienteDialog;
 
 import com.amorapetshop.controller.ClienteController;
 
-public class PesquisaClienteDialog extends JDialog {
+public class ConsultarClienteDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -21,11 +27,12 @@ public class PesquisaClienteDialog extends JDialog {
     private JButton pesquisarButton;
     private JPanel cebecalhoCliente;
     private JPanel ConteudoCliente;
+    private JButton novoButton;
     private DefaultTableModel tableModel;
     private ClienteController clienteController;
     private Cliente clienteSelecionado;
 
-    public PesquisaClienteDialog() {
+    public ConsultarClienteDialog(JDialog currentDialog) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -34,13 +41,13 @@ public class PesquisaClienteDialog extends JDialog {
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onOK();
+                onOK(currentDialog);
             }
         });
 
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onCancel();
+                onCancel(currentDialog);
             }
         });
 
@@ -48,14 +55,14 @@ public class PesquisaClienteDialog extends JDialog {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                onCancel();
+                onCancel(currentDialog);
             }
         });
 
         // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onCancel();
+                onCancel(currentDialog);
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         tabelaClientes.addComponentListener(new ComponentAdapter() {
@@ -110,6 +117,26 @@ public class PesquisaClienteDialog extends JDialog {
                 pesquisaCPF.setText("");
             }
         });
+        novoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                /// Obtém a janela atual associada ao botão clicado
+                JDialog currentDialog = (JDialog) SwingUtilities.getRoot((Component) e.getSource());
+
+                // Cria e configura o novo conteúdo (ConsultaAnimal)
+                NovoClienteDialog novoClienteDialog = new NovoClienteDialog(currentDialog, tableModel);
+                JPanel newconsultapainel = novoClienteDialog.getNovoClienteDialog();
+
+                // Atualiza o conteúdo da janela atual
+                currentDialog.setContentPane(newconsultapainel);
+
+                // Atualiza a exibição
+                currentDialog.revalidate();
+                currentDialog.repaint();
+
+                clienteSelecionado = novoClienteDialog.getClienteSelecionado();
+            }
+        });
     }
 
     private void atualizarTabela(List<Cliente> resultados) {
@@ -123,7 +150,7 @@ public class PesquisaClienteDialog extends JDialog {
         }
     }
 
-    private void onOK() {
+    private void onOK(JDialog currentDialog) {
         // Obtém a linha selecionada na tabela
         int selectedRow = tabelaClientes.getSelectedRow();
 
@@ -138,17 +165,22 @@ public class PesquisaClienteDialog extends JDialog {
             clienteSelecionado.setId(id);
             clienteSelecionado.setNome(nome);
 
+            System.out.println(clienteSelecionado.getNome());
+            System.out.println(clienteSelecionado.getId());
+
             // Fecha a janela
-            dispose();
+            dispose();  // Fecha o NovoClienteDialog
+            currentDialog.dispose();  // Fecha o ConsultarClienteDialog
         } else {
             // Nenhuma linha selecionada, trate conforme necessário
             JOptionPane.showMessageDialog(this, "Nenhum cliente selecionado.", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
     }
 
-    private void onCancel() {
+    private void onCancel(JDialog currentDialog) {
         // add your code here if necessary
         dispose();
+        currentDialog.dispose();
     }
 
     public Cliente getClienteSelecionado() {
@@ -156,10 +188,19 @@ public class PesquisaClienteDialog extends JDialog {
     }
 
     public static void main(String[] args) {
-        PesquisaClienteDialog dialog = new PesquisaClienteDialog();
+        // Cria uma instância de JDialog
+        JDialog currentDialog = new JDialog();
+
+        // Cria uma instância de ConsultarClienteDialog passando o JDialog como argumento
+        ConsultarClienteDialog dialog = new ConsultarClienteDialog(currentDialog);
+
         dialog.pack();
-        dialog.setSize(450, 250);
+        dialog.setSize(450, 350);
         dialog.setVisible(true);
         System.exit(0);
+    }
+
+    public JPanel getConsultaClienteDialog() {
+        return contentPane;
     }
 }

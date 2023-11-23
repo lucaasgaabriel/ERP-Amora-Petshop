@@ -137,7 +137,7 @@ public class ConsultaAnimal {
                     String nome = (String) TableaAnimais.getValueAt(selectedRow, 1);
                     String especie = (String) TableaAnimais.getValueAt(selectedRow, 2);
                     String raca = (String) TableaAnimais.getValueAt(selectedRow, 3);
-                    Long dono = (Long) TableaAnimais.getValueAt(selectedRow, 4);
+                    Long dono = (Long) TableaAnimais.getValueAt(selectedRow, 5);
 
                     // Crie a tela de edição
                     JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
@@ -188,8 +188,8 @@ public class ConsultaAnimal {
         });
 
 
-        String[] colunas = {"id","Nome", "Especie", "Raça", "Dono"};
-        String[][] objetos = {{"", "", "", "", ""}};
+        String[] colunas = {"id","Nome", "Especie", "Raça", "Dono","idDono"};
+        String[][] objetos = {{"", "", "", "", "", ""}};
 
         tableModel = new DefaultTableModel(objetos, colunas) {
             @Override
@@ -209,6 +209,10 @@ public class ConsultaAnimal {
         columnModel.getColumn(0).setMaxWidth(0);
         columnModel.getColumn(0).setWidth(0);
 
+        columnModel.getColumn(5).setMinWidth(0);
+        columnModel.getColumn(5).setMaxWidth(0);
+        columnModel.getColumn(5).setWidth(0);
+
         TableaAnimais.setAutoCreateRowSorter(true);
         TableaAnimais.getTableHeader().setReorderingAllowed(false);
         TableaAnimais.getTableHeader().setVisible(true);
@@ -219,6 +223,7 @@ public class ConsultaAnimal {
                 super.componentResized(e);
             }
         });
+        dono_input_animal.setEditable(false);
         carregarDadosNaTabela();
     }
     private void carregarDadosNaTabela() {
@@ -235,9 +240,9 @@ public class ConsultaAnimal {
             // Realiza a busca do cliente pelo ID do dono
             ClienteController clienteController = new ClienteController();
 
-            // Crie uma instância de Cliente com o ID fornecido
+            /// Crie uma instância de Cliente com o ID fornecido
             Cliente clienteConsulta = new Cliente();
-            clienteConsulta.setId(idDono);
+            clienteConsulta.setId(idDono); // Certifique-se de que setId aceita um Long como argumento
 
             // Realize a consulta para obter as informações do cliente pelo ID
             List<Cliente> clientes = clienteController.buscarFiltro(clienteConsulta);
@@ -248,7 +253,7 @@ public class ConsultaAnimal {
                 Cliente cliente = clientes.get(0);
 
                 // Adiciona a linha na tabela com o nome do dono em vez do ID
-                tableModel.addRow(new Object[]{animal.getId(), animal.getNome(), animal.getEspecie(), animal.getRaca(), cliente.getNome()});
+                tableModel.addRow(new Object[]{animal.getId(), animal.getNome(), animal.getEspecie(), animal.getRaca(), cliente.getNome(), animal.getDono()});
                 // Adicione mais colunas conforme necessário
             }
         }
@@ -264,9 +269,9 @@ public class ConsultaAnimal {
             // Realiza a busca do cliente pelo ID do dono
             ClienteController clienteController = new ClienteController();
 
-            // Crie uma instância de Cliente com o ID fornecido
+            /// Crie uma instância de Cliente com o ID fornecido
             Cliente clienteConsulta = new Cliente();
-            clienteConsulta.setId(idDono);
+            clienteConsulta.setId(idDono); // Certifique-se de que setId aceita um Long como argumento
 
             // Realize a consulta para obter as informações do cliente pelo ID
             List<Cliente> clientes = clienteController.buscarFiltro(clienteConsulta);
@@ -277,7 +282,7 @@ public class ConsultaAnimal {
                 Cliente cliente = clientes.get(0);
 
                 // Adiciona a linha na tabela com o nome do dono em vez do ID
-                tableModel.addRow(new Object[]{animal.getId(), animal.getNome(), animal.getEspecie(), animal.getRaca(), cliente.getNome()});
+                tableModel.addRow(new Object[]{animal.getId(), animal.getNome(), animal.getEspecie(), animal.getRaca(), cliente.getNome(), animal.getDono()});
                 // Adicione mais colunas conforme necessário
             }
         }

@@ -61,7 +61,7 @@ public class AnimalJpaDao extends EntityJpaDao<Long, Animal> {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Animal> criteriaQuery = criteriaBuilder.createQuery(Animal.class);
         Root<Animal> rootAnimal = criteriaQuery.from(Animal.class);
-        Join<Animal, Cliente> joinCliente = rootAnimal.join("dono", JoinType.INNER);
+        //Join<Animal, Cliente> joinCliente = rootAnimal.join("dono", JoinType.INNER);
 
         List<Predicate> predicates = new ArrayList<>();
 
@@ -74,13 +74,6 @@ public class AnimalJpaDao extends EntityJpaDao<Long, Animal> {
         if (a.getRaca() != null && !a.getRaca().isEmpty()) {
             predicates.add(criteriaBuilder.like(rootAnimal.get("raca"), "%" + a.getRaca() + "%"));
         }
-        //pesquisar o nome do cliente e comparar o id do cliente com o valor do campo dono
-        //get nome do cliente
-        if (a.getDono() != null && a.getDono().isEmpty()) {
-            predicates.add(criteriaBuilder.equal(rootAnimal.get("dono"), a.getDono()));
-        }
-
-
 
         criteriaQuery.where(predicates.toArray(new Predicate[0]));
         criteriaQuery.orderBy(criteriaBuilder.asc(rootAnimal.get("nome")));

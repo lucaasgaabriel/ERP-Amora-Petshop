@@ -91,13 +91,18 @@ public class NovoAnimal {
         buscarDonoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Cria uma instância de JDialog
+                JDialog currentDialog = new JDialog();
                 // Abrir a caixa de diálogo de pesquisa de cliente
-                PesquisaClienteDialog pesquisaClienteDialog = new PesquisaClienteDialog();
+                ConsultarClienteDialog pesquisaClienteDialog = new ConsultarClienteDialog(currentDialog);
                 pesquisaClienteDialog.pack();
+                pesquisaClienteDialog.setSize(450, 250);
                 pesquisaClienteDialog.setVisible(true);
 
-                // Obtém o cliente selecionado da caixa de diálogo
+                // Obtém o cliente selecionado de todas as caixas de dialogo que forem apertas dentro dessa
                 clienteSelecionado = pesquisaClienteDialog.getClienteSelecionado();
+                clienteSelecionado = consultarClienteDialog.getClienteSelecionado();
+                clienteSelecionado = novoClienteDialog.getClienteSelecionado();
 
                 // Atualiza campos conforme necessário (exemplo: exibir o nome do cliente em um JTextField)
                 dono.setText(clienteSelecionado != null ? clienteSelecionado.getNome() : "");

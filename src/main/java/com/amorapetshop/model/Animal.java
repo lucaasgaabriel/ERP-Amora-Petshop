@@ -17,8 +17,9 @@ public class Animal {
     private String especie;
     private String raca;
     @ManyToOne
-    @JoinColumn(name = "id")
-    private Cliente dono;
+    //@JoinColumn(name = "id")
+    private Cliente donoid;
+    private Long dono;
 
 
     public Long getId() {
@@ -45,10 +46,10 @@ public class Animal {
     public void setRaca(String raca) {
         this.raca = raca;
     }
-    public Cliente getDono() {
+    public Long getDono() {
         return dono;
     }
-    public void setDono(Cliente dono) {
+    public void setDono(Long dono) {
         this.dono = dono;
     }
 }
