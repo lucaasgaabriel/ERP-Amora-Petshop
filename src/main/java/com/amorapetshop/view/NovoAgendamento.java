@@ -20,6 +20,7 @@ public class NovoAgendamento {
     private JPanel Agendemano_painel_new;
     private JComboBox comboBoxtipo;
     private  AgendamentoController agendamentoController;
+    private long agendamentoId;
 
     public NovoAgendamento() {
         agendamentoController = new AgendamentoController();
@@ -60,30 +61,50 @@ public class NovoAgendamento {
                 String dataString = Data_agendamento.getText();
                 String hora = HR_Agendamento.getText();
                 String responsavel = resposavel.getText();
-                String valor = valor_Agendamento.getText();
+                String valorString = valor_Agendamento.getText();
 
                 try {
                     Date data = format.parse(dataString);
 
-                    // Crie uma instância da entidade Animal com os dados
-                    Agendamento novoAgendamento = new Agendamento();
-                    novoAgendamento.setTipoAgendamento(tipo);
-                    novoAgendamento.setDataAgendamento(data);
-                    novoAgendamento.setHoraAgendamento(hora);
-                    novoAgendamento.setResponsavel(responsavel);
-                    novoAgendamento.setPrecoOrcamento(Double.parseDouble(valor));
+                    try {
+                        // Convertendo a string para um valor double
+                        double valor = Double.parseDouble(valorString);
 
-                    agendamentoController.salvar(novoAgendamento);
+                        if (agendamentoId != 0L) {
+                            Agendamento agendamentoEditado = new Agendamento();
+                            agendamentoEditado.setId(agendamentoId);
+                            agendamentoEditado.setTipoAgendamento(tipo);
+                            agendamentoEditado.setDataAgendamento(data);
+                            agendamentoEditado.setHoraAgendamento(hora);
+                            agendamentoEditado.setResponsavel(responsavel);
+                            agendamentoEditado.setPrecoOrcamento(valor);
 
+                            // Chame o método de salvar no controlador
+                            agendamentoController.salvar(agendamentoEditado);
+                        } else {
+                            // Crie uma instância da entidade Agendamento com os dados
+                            Agendamento novoAgendamento = new Agendamento();
+                            novoAgendamento.setTipoAgendamento(tipo);
+                            novoAgendamento.setDataAgendamento(data);
+                            novoAgendamento.setHoraAgendamento(hora);
+                            novoAgendamento.setResponsavel(responsavel);
+                            novoAgendamento.setPrecoOrcamento(valor);
+
+                            agendamentoController.salvar(novoAgendamento);
+
+                            // Limpe os campos de texto ou faça outras ações após o cadastro
+                            comboBoxtipo.setSelectedIndex(0);
+                            Data_agendamento.setText("");
+                            HR_Agendamento.setText("");
+                            resposavel.setText("");
+                            valor_Agendamento.setText("");
+                        }
+                    } catch (NumberFormatException x) {
+                        x.printStackTrace();
+                    }
                 } catch (ParseException x) {
                     x.printStackTrace();
                 }
-
-                comboBoxtipo.setSelectedIndex(0);
-                Data_agendamento.setText("");
-                HR_Agendamento.setText("");
-                resposavel.setText("");
-                valor_Agendamento.setText("");
             }
         });
         cancelarButton.addActionListener(new ActionListener() {
@@ -141,17 +162,16 @@ public class NovoAgendamento {
                 break;
             }
         }
-
         // Definir o índice selecionado no JComboBox
         comboBoxtipo.setSelectedIndex(index);
     }
-
-
     public void setHR_Agendamento(String hora) {
         this.HR_Agendamento.setText(hora);
     }
     public void setValor_Agendamento(String valor) {
         this.valor_Agendamento.setText(valor);
     }
-
+    public void setid_Agendamento(long id) {
+        this.agendamentoId = id;
+    }
 }

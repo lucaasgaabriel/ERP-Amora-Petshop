@@ -102,9 +102,6 @@ public class NovoAnimal {
                 // Obtém o cliente selecionado de todas as caixas de dialogo que forem apertas dentro dessa
 
                 clienteSelecionado = pesquisaClienteDialog.getClienteSelecionado();
-                //clienteSelecionado = pesquisaClienteDialog.getClienteSelecionado();
-                //clienteSelecionado = consultarClienteDialog.getClienteSelecionado();
-                //clienteSelecionado = novoClienteDialog.getClienteSelecionado();
 
                 // Atualiza campos conforme necessário (exemplo: exibir o nome do cliente em um JTextField)
                 dono.setText(clienteSelecionado != null ? clienteSelecionado.getNome() : "");

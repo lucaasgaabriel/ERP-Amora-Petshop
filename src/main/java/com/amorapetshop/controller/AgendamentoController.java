@@ -1,6 +1,7 @@
 package com.amorapetshop.controller;
 
 
+import java.util.Collections;
 import java.util.List;
 import com.amorapetshop.model.Agendamento;
 import com.amorapetshop.model.dao.AgendamentoJpaDao;
@@ -36,12 +37,11 @@ public class AgendamentoController {
      * @return
      */
     public List<Agendamento> buscarFiltro(Agendamento agendamento){
-
-        if(agendamento.getResponsavel().isEmpty() && agendamento.getTipoAgendamento().isEmpty()
-                ) {
-            return buscarTodos();
-        }else {
+        try {
             return agendamentoDao.buscaFiltro(agendamento);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList(); // ou trate a exceção de forma apropriada
         }
     }
 }

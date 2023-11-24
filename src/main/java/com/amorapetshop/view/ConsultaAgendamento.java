@@ -61,8 +61,6 @@ public class ConsultaAgendamento {
 
                 responsavelimput.setText("");
                 boxtipo.setSelectedIndex(0);
-
-
             }
         });
         tebela_agendamento.addComponentListener(new ComponentAdapter() {
@@ -129,8 +127,8 @@ public class ConsultaAgendamento {
                     Timestamp timestamp = (Timestamp) tebela_agendamento.getValueAt(selectedRow, 2);
                     String hora = (String) tebela_agendamento.getValueAt(selectedRow, 3);
                     String responsavel = (String) tebela_agendamento.getValueAt(selectedRow, 4);
-                    String valor = (String) tebela_agendamento.getValueAt(selectedRow, 5);
-
+                    Object valorObj = tebela_agendamento.getValueAt(selectedRow, 5);
+                    String valor = Objects.toString(valorObj, "");
 
                     // Cria uma instância de Agendamento com os dados da linha selecionada
                     Date data = new Date(timestamp.getTime());
@@ -141,6 +139,7 @@ public class ConsultaAgendamento {
 
                     // Crie uma instância da entidade Animal com os dados
                     Agendamento agendamentoParaExcluir = new Agendamento();
+                    agendamentoParaExcluir.setId(id);
                     agendamentoParaExcluir.setTipoAgendamento(tipo);
                     agendamentoParaExcluir.setDataAgendamento(data);
                     agendamentoParaExcluir.setHoraAgendamento(hora);
@@ -185,13 +184,15 @@ public class ConsultaAgendamento {
                     Timestamp timestamp = (Timestamp) tebela_agendamento.getValueAt(selectedRow, 2);
                     String hora = (String) tebela_agendamento.getValueAt(selectedRow, 3);
                     String responsavel = (String) tebela_agendamento.getValueAt(selectedRow, 4);
-                    String valor = (String) tebela_agendamento.getValueAt(selectedRow, 5);
+                    Object valorObj = tebela_agendamento.getValueAt(selectedRow, 5);
+                    String valor = Objects.toString(valorObj, "");
 
                     // Crie a tela de edição
                     JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
                     NovoAgendamento telaEdicao = new NovoAgendamento();
 
                     // Configure os campos com os dados recuperados
+                    telaEdicao.setid_Agendamento(id);
                     telaEdicao.setComboBoxtipo(tipo);
                     telaEdicao.setDT_Entrada(timestamp);
                     telaEdicao.setHR_Agendamento(hora);
@@ -235,8 +236,18 @@ public class ConsultaAgendamento {
             }
         });
         carregarDadosNaTabela();
+        boxtipo.setSelectedIndex(0);
+        boxtipo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (boxtipo.getSelectedIndex() == 0) {
+                    boxtipo.setSelectedItem(null);
+                }
+            }
+        });
     }
     private void carregarDadosNaTabela() {
+        boxtipo.setSelectedIndex(0);
         // Limpa os dados existentes na tabela
         tableModel.setRowCount(0);
 

@@ -14,7 +14,6 @@ import javax.persistence.EntityTransaction;
 
 public class ProdutoJpaDao extends EntityJpaDao<Long, Produto> {
     public void salvar(Produto produto) {
-
         try {
             begin();
             if(produto.getId()== 0L) {

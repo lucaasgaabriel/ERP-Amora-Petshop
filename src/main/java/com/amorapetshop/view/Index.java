@@ -22,7 +22,9 @@ public class Index extends JFrame {
     private JButton servicosButton;
     private JPanel mainIndex;
     private JLabel Logo;
+    private JLabel teste;
     private JButton button1;
+    private JPanel banana;
 
     public Index() {
         servicosButton.addActionListener(new ActionListener() {
@@ -131,7 +133,7 @@ public class Index extends JFrame {
         clienteButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         servicosButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         botoes_index.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
+        button1.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
     };
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

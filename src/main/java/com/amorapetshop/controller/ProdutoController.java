@@ -43,5 +43,4 @@ public class ProdutoController {
             return Collections.emptyList(); // ou trate a exceção de forma apropriada
         }
     }
-
 }
