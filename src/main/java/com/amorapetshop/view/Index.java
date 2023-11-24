@@ -32,8 +32,8 @@ public class Index extends JFrame {
                 JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
 
                 // Cria e configura o novo conteúdo (ConsultaAnimal)
-                NovoAgendamento Novo_agendamento = new NovoAgendamento();
-                JPanel Novo_agendamentoPainel = Novo_agendamento.getAgendemano_painel_new();
+                ConsultaAgendamento Novo_agendamento = new ConsultaAgendamento();
+                JPanel Novo_agendamentoPainel = Novo_agendamento.getAgendamentoconsulta();
 
                 // Atualiza o conteúdo da janela atual
                 currentFrame.setContentPane(Novo_agendamentoPainel);

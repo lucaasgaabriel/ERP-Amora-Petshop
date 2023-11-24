@@ -21,7 +21,7 @@ public class NovoClienteDialog extends JDialog {
     private JTextField CPFCliente;
     private JTextField Telefone;
     private JComboBox Sexobox;
-    private Cliente clienteSelecionado;
+    private Cliente clienteSelecionado = null;
 
     public NovoClienteDialog(JDialog currentDialog, DefaultTableModel tableModel) {
         setContentPane(contentPane);
@@ -34,7 +34,7 @@ public class NovoClienteDialog extends JDialog {
                 String nome = NomeCliente.getText();
                 String cpf = CPFCliente.getText();
                 String numero = Telefone.getText();
-                String sexo= (String) Sexobox.getSelectedItem();
+                String sexo = (String) Sexobox.getSelectedItem();
 
                 // Crie uma instância da entidade Animal com os dados
                 Cliente novoCliente = new Cliente();

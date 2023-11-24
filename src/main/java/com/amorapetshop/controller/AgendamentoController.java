@@ -20,7 +20,7 @@ public class AgendamentoController {
         agendamentoDao.salvar(agendamento);
     }
     public void excluir(Agendamento agendamento) {
-        agendamentoDao.delete(agendamento);
+        agendamentoDao.excluir(agendamento);
     }
 
 
