@@ -10,16 +10,14 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.sql.Timestamp;
 import java.util.Objects;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class ConsultaAgendamento {
     private JButton voltarButton;
@@ -93,6 +91,8 @@ public class ConsultaAgendamento {
         tebela_agendamento.setAutoCreateRowSorter(true);
         tebela_agendamento.getTableHeader().setReorderingAllowed(false);
         tebela_agendamento.getTableHeader().setVisible(true);
+
+        tebela_agendamento.getColumnModel().getColumn(2).setCellRenderer(new DateRenderer());
         //TabelaFuncionarios.setVisible(true);
         novoButton.addActionListener(new ActionListener() {
             @Override
@@ -245,6 +245,23 @@ public class ConsultaAgendamento {
                 }
             }
         });
+        responsavelimput.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+            }
+        });
+    }
+    private static class DateRenderer extends DefaultTableCellRenderer {
+        private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            if (value instanceof Date) {
+                value = sdf.format(value);
+            }
+            return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        }
     }
     private void carregarDadosNaTabela() {
         boxtipo.setSelectedIndex(0);

@@ -65,24 +65,6 @@ public class Index extends JFrame {
                 //consultaAnimal.carregarTodosDados();
             }
         });
-        funcionarioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Obtém a janela atual associada ao botão clicado
-                JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
-
-                // Cria e configura o novo conteúdo (ConsultaAnimal)
-                ConsultaFuncionario consultaFuncionario = new ConsultaFuncionario();
-                JPanel newconsultapainel = consultaFuncionario.getFunciojario_consulta();
-
-                // Atualiza o conteúdo da janela atual
-                currentFrame.setContentPane(newconsultapainel);
-
-                // Atualiza a exibição
-                currentFrame.revalidate();
-                currentFrame.repaint();
-            }
-        });
         clienteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -129,11 +111,9 @@ public class Index extends JFrame {
         });
         produtoButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         animalButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        funcionarioButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         clienteButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         servicosButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         botoes_index.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        button1.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
     };
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

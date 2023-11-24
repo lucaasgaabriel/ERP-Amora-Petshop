@@ -5,6 +5,7 @@ import com.amorapetshop.model.Animal;
 import com.amorapetshop.model.Produto;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
@@ -290,6 +291,8 @@ public class ConsultarProduto {
         TabelaProduto.setAutoCreateRowSorter(true);
         TabelaProduto.getTableHeader().setReorderingAllowed(false);
         TabelaProduto.getTableHeader().setVisible(true);
+        TabelaProduto.getColumnModel().getColumn(2).setCellRenderer(new DateRenderer());
+
         Produtoconsulta.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -319,6 +322,17 @@ public class ConsultarProduto {
         for (Produto produto : resultados) {
             tableModel.addRow(new Object[]{produto.getId(), produto.getNome(), produto.getDataEntrada(), produto.getValor(), produto.getQuantidade()});
             // Adicione mais colunas conforme necessário
+        }
+    }
+    private static class DateRenderer extends DefaultTableCellRenderer {
+        private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            if (value instanceof Date) {
+                value = sdf.format(value);
+            }
+            return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         }
     }
     public JPanel getProdutoconsulta(){
