@@ -9,6 +9,7 @@ import java.awt.event.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.text.DateFormat;
 public class NovoAgendamento {
     private JTextField resposavel;
     private JTextField Data_agendamento;
@@ -113,4 +114,44 @@ public class NovoAgendamento {
     public JPanel getAgendemano_painel_new() {
         return Agendemano_painel_new;
     }
+
+    public void setResposavel(String responsavel) {
+        this.resposavel.setText(responsavel);
+    }
+
+    public void setDT_Entrada(Date data) {
+        // Crie um formato de data
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+        // Formate a data como uma string
+        String dataFormatada = dateFormat.format(data);
+
+        // Defina a string formatada no componente de interface gráfica
+        this.Data_agendamento.setText(dataFormatada);
+    }
+    public void setComboBoxtipo(String tipo) {
+        // Obter o modelo do JComboBox
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBoxtipo.getModel();
+
+        // Encontrar o índice do sexo no modelo
+        int index = -1;
+        for (int i = 0; i < model.getSize(); i++) {
+            if (model.getElementAt(i).equals(tipo)) {
+                index = i;
+                break;
+            }
+        }
+
+        // Definir o índice selecionado no JComboBox
+        comboBoxtipo.setSelectedIndex(index);
+    }
+
+
+    public void setHR_Agendamento(String hora) {
+        this.HR_Agendamento.setText(hora);
+    }
+    public void setValor_Agendamento(String valor) {
+        this.valor_Agendamento.setText(valor);
+    }
+
 }

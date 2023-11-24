@@ -14,7 +14,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.sql.Timestamp;
+import java.util.Objects;
 
 public class ConsultaAgendamento {
     private JButton voltarButton;
@@ -38,6 +43,25 @@ public class ConsultaAgendamento {
         buttonPesquisar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Obtém os critérios de pesquisa do formulário
+                String responsavel= responsavelimput.getText();
+                String tipo = (String) boxtipo.getSelectedItem();
+
+                // Cria uma instância de Animal com os critérios de pesquisa
+                Agendamento agendamentoConsulta = new Agendamento();
+                agendamentoConsulta.setResponsavel(responsavel);
+                agendamentoConsulta.setTipoAgendamento(tipo);
+
+
+                // Chama o método buscarComFiltro no back-end
+                List<Agendamento> resultados = agendamentoController.buscarFiltro(agendamentoConsulta);
+
+                // Atualiza a tabela com os resultados da pesquisa
+                atualizarTabela(resultados);
+
+                responsavelimput.setText("");
+                boxtipo.setSelectedIndex(0);
+
 
             }
         });
@@ -93,12 +117,97 @@ public class ConsultaAgendamento {
         excluirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Obtém a linha selecionada na tabela
+                int selectedRow = tebela_agendamento.getSelectedRow();
+
+
+                // Verifica se uma linha foi realmente selecionada
+                if (selectedRow >= 0) {
+                    // Obtém os dados da linha selecionada
+                    long id = (long) tebela_agendamento.getValueAt(selectedRow, 0);
+                    String tipo = (String) tebela_agendamento.getValueAt(selectedRow, 1);
+                    Timestamp timestamp = (Timestamp) tebela_agendamento.getValueAt(selectedRow, 2);
+                    String hora = (String) tebela_agendamento.getValueAt(selectedRow, 3);
+                    String responsavel = (String) tebela_agendamento.getValueAt(selectedRow, 4);
+                    String valor = (String) tebela_agendamento.getValueAt(selectedRow, 5);
+
+
+                    // Cria uma instância de Agendamento com os dados da linha selecionada
+                    Date data = new Date(timestamp.getTime());
+                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                    String dataString = format.format(data);
+
+
+
+                    // Crie uma instância da entidade Animal com os dados
+                    Agendamento agendamentoParaExcluir = new Agendamento();
+                    agendamentoParaExcluir.setTipoAgendamento(tipo);
+                    agendamentoParaExcluir.setDataAgendamento(data);
+                    agendamentoParaExcluir.setHoraAgendamento(hora);
+                    agendamentoParaExcluir.setResponsavel(responsavel);
+                    agendamentoParaExcluir.setPrecoOrcamento(Double.parseDouble(valor));
+
+
+
+                    // Confirmação de exclusão
+                    int option = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir este agendamento?", "Confirmação de exclusão", JOptionPane.YES_NO_OPTION);
+
+                    if (option == JOptionPane.YES_OPTION) {
+                        // Realiza a exclusão do animal no banco de dados
+                        agendamentoController.excluir(agendamentoParaExcluir);
+
+                        // Chama o método buscarComFiltro no back-end
+                        List<Agendamento> resultados = agendamentoController.buscarFiltro(agendamentoParaExcluir);
+
+                        // Atualiza a tabela com os resultados da pesquisa
+                        atualizarTabela(resultados);
+
+                        // Atualiza a tabela após a exclusão
+                        carregarDadosNaTabela();
+                    }
+                } else {
+                    // Se nenhuma linha estiver selecionada, exiba uma mensagem de erro
+                    JOptionPane.showMessageDialog(null, "Por favor, selecione uma linha para excluir.",
+                            "Nenhuma Linha Selecionada", JOptionPane.ERROR_MESSAGE);
+                }
 
             }
         });
         editarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Verifique se uma linha está selecionada
+                int selectedRow = tebela_agendamento.getSelectedRow();
+                if (selectedRow != -1) {
+                    // Obtenha os dados da linha selecionada
+                    long id = (long) tebela_agendamento.getValueAt(selectedRow, 0);
+                    String tipo = (String) tebela_agendamento.getValueAt(selectedRow, 1);
+                    Timestamp timestamp = (Timestamp) tebela_agendamento.getValueAt(selectedRow, 2);
+                    String hora = (String) tebela_agendamento.getValueAt(selectedRow, 3);
+                    String responsavel = (String) tebela_agendamento.getValueAt(selectedRow, 4);
+                    String valor = (String) tebela_agendamento.getValueAt(selectedRow, 5);
+
+                    // Crie a tela de edição
+                    JFrame currentFrame = (JFrame) SwingUtilities.getRoot((Component) e.getSource());
+                    NovoAgendamento telaEdicao = new NovoAgendamento();
+
+                    // Configure os campos com os dados recuperados
+                    telaEdicao.setComboBoxtipo(tipo);
+                    telaEdicao.setDT_Entrada(timestamp);
+                    telaEdicao.setHR_Agendamento(hora);
+                    telaEdicao.setResposavel(responsavel);
+                    telaEdicao.setValor_Agendamento(valor);
+
+                    // Atualize o conteúdo da janela atual
+                    currentFrame.setContentPane(telaEdicao.getAgendemano_painel_new());
+
+                    // Atualize a exibição
+                    currentFrame.revalidate();
+                    currentFrame.repaint();
+                } else {
+                    // Se nenhuma linha estiver selecionada, exiba uma mensagem de aviso
+                    JOptionPane.showMessageDialog(null, "Selecione uma linha para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                }
 
             }
         });
